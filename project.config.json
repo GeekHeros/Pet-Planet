@@ -1,13 +1,15 @@
 {
-  "miniprogramRoot": "./dist",
-  "projectname": "Pat-Planet",
-  "description": "For Pat-Planet",
-  "appid": "touristappid",
-  "setting": {
-    "urlCheck": true,
-    "es6": false,
-    "postcss": false,
-    "minified": false
-  },
-  "compileType": "miniprogram"
+	"miniprogramRoot": "./dist",
+	"projectname": "Pat-Planet",
+	"description": "For Pat-Planet",
+	"appid": "wx9840b955670cb46c",
+	"setting": {
+		"urlCheck": true,
+		"es6": false,
+		"postcss": false,
+		"minified": false,
+		"newFeature": true
+	},
+	"compileType": "miniprogram",
+	"condition": {}
 }
