@@ -4,6 +4,13 @@ module.exports = {
   },
   defineConstants: {
   },
-  weapp: {},
+  weapp: {
+    module: {
+      postcss: {
+        enable: true,
+        limit: 102400000000
+      }
+    }
+  },
   h5: {}
-}
+};

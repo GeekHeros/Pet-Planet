@@ -1,52 +1,59 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Button, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
-
-import { add, minus, asyncAdd } from '../../actions/counter'
-
-import './index.less'
+import Taro, {Component} from '@tarojs/taro';
+import {View} from "@tarojs/components";
+import {AtTabBar} from 'taro-ui';
+import {connect} from "@tarojs/redux";
+import {changeCurrent} from "../../actions/home";
 
 
-@connect(({ counter }) => ({
-  counter
-}), (dispatch) => ({
-  add () {
-    dispatch(add())
-  },
-  dec () {
-    dispatch(minus())
-  },
-  asyncAdd () {
-    dispatch(asyncAdd())
+@connect((state) => {
+  return {
+    ...state,
+    homeStore: state.homeStore
   }
-}))
+}, (dispatch) => {
+  return {
+    /**
+     * 通过onClick事件来更新current值变化
+     * @param value
+     */
+    changeCurrentHandler(value) {
+      dispatch(changeCurrent({current: value}));
+    }
+  }
+})
 class Index extends Component {
 
-    config = {
+  config = {
     navigationBarTitleText: '首页'
+  };
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps);
   }
 
-  componentWillReceiveProps (nextProps) {
-    console.log(this.props, nextProps)
+  componentWillUnmount() {
   }
 
-  componentWillUnmount () { }
+  componentDidShow() {
+  }
 
-  componentDidShow () { }
+  componentDidHide() {
+  }
 
-  componentDidHide () { }
-
-  render () {
+  render() {
+    const {homeStore, changeCurrentHandler} = this.props;
+    const {current, tabList} = homeStore;
     return (
-      <View className='index'>
-        <Button className='add_btn' onClick={this.props.add}>+</Button>
-        <Button className='dec_btn' onClick={this.props.dec}>-</Button>
-        <Button className='dec_btn' onClick={this.props.asyncAdd}>async</Button>
-        <View><Text>{this.props.counter.num}</Text></View>
-        <View><Text>Hello, World</Text></View>
+      <View>
+        <AtTabBar
+          fixed
+          current={current}
+          tabList={tabList}
+          onClick={changeCurrentHandler}
+        />
       </View>
     )
   }
 }
 
-export default Index
+export default Index;
