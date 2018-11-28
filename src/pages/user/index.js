@@ -5,6 +5,8 @@ import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
 
+import "./user.less";
+
 @connect((state) => {
   return {
     ...state,
@@ -14,7 +16,7 @@ import {tabBarTabList, pageCurrentList} from "../../utils/static";
   return {
     changeCurrentHandler(value) {
       dispatch(changeCurrent({current: value}));
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: pageCurrentList[`${value}`]
       });
     }
@@ -24,6 +26,10 @@ class User extends Component {
   constructor(props) {
     super(props);
   }
+
+  static options = {
+    addGlobalClass: true
+  };
 
   config = {
     navigationBarTitleText: "我"

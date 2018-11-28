@@ -1,9 +1,10 @@
 import Taro, {Component} from '@tarojs/taro';
 import {View} from "@tarojs/components";
-import {AtTabBar} from 'taro-ui';
+import {AtTabBar, AtForm, AtButton} from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
+import "./index.less";
 
 
 @connect((state) => {
@@ -19,13 +20,23 @@ import {tabBarTabList, pageCurrentList} from "../../utils/static";
      */
     changeCurrentHandler(value) {
       dispatch(changeCurrent({current: value}));
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: pageCurrentList[`${value}`]
       });
+    },
+    /**
+     * 点击发起宠物交易的Submit事件
+     */
+    onSubmitHandler(event) {
+      console.log(event);
     }
   }
 })
 class Index extends Component {
+
+  static options = {
+    addGlobalClass: true
+  };
 
   config = {
     navigationBarTitleText: '首页'
@@ -49,11 +60,21 @@ class Index extends Component {
   }
 
   render() {
-    const {homeStore, changeCurrentHandler} = this.props;
+    const {homeStore, changeCurrentHandler, onSubmitHandler} = this.props;
     const {current} = homeStore;
     return (
       <View>
         首页
+        <AtForm
+          reportSubmit={true}
+          style='border:none'
+          onSubmit={onSubmitHandler}
+          className='pet-business-deal'
+        >
+          <AtButton size='small' type='primary' className='pet-business-deal-add' formType='submit'>
+            +
+          </AtButton>
+        </AtForm>
         <AtTabBar
           fixed
           current={current}
