@@ -1,10 +1,9 @@
-import Taro, {Component} from '@tarojs/taro';
+import Taro, {Component} from "@tarojs/taro";
 import {View} from "@tarojs/components";
-import {AtTabBar} from 'taro-ui';
+import {AtTabBar} from "taro-ui";
 import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
-
 
 @connect((state) => {
   return {
@@ -13,10 +12,6 @@ import {tabBarTabList, pageCurrentList} from "../../utils/static";
   }
 }, (dispatch) => {
   return {
-    /**
-     * 通过onClick事件来更新current值变化
-     * @param value
-     */
     changeCurrentHandler(value) {
       dispatch(changeCurrent({current: value}));
       Taro.navigateTo({
@@ -25,10 +20,13 @@ import {tabBarTabList, pageCurrentList} from "../../utils/static";
     }
   }
 })
-class Index extends Component {
+class User extends Component {
+  constructor(props) {
+    super(props);
+  }
 
   config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: "我"
   };
 
   componentDidMount() {
@@ -39,21 +37,12 @@ class Index extends Component {
 
   }
 
-  componentWillUnmount() {
-  }
-
-  componentDidShow() {
-  }
-
-  componentDidHide() {
-  }
-
   render() {
     const {homeStore, changeCurrentHandler} = this.props;
     const {current} = homeStore;
     return (
       <View>
-        首页
+        我
         <AtTabBar
           fixed
           current={current}
@@ -65,4 +54,4 @@ class Index extends Component {
   }
 }
 
-export default Index;
+export default User;

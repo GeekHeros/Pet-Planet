@@ -2,16 +2,7 @@ import {homeConstants} from "../../constants";
 
 
 const defaultState = {
-  current: 0,
-  tabList: [{
-    title: "首页",
-    iconPrefixClass: "iconfont",
-    iconType: "petPlanet-planet"
-  }, {
-    title: "我",
-    iconPrefixClass: "iconfont",
-    iconType: "petPlanet-me"
-  }]
+  current: 0
 };
 
 /**
