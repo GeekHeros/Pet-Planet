@@ -1,6 +1,6 @@
 import Taro, {Component} from '@tarojs/taro';
 import {View} from "@tarojs/components";
-import {AtTabBar, AtForm, AtButton} from 'taro-ui';
+import {AtTabBar, AtForm, AtButton, AtIcon} from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
@@ -71,8 +71,8 @@ class Index extends Component {
           onSubmit={onSubmitHandler}
           className='pet-business-deal'
         >
+          <AtIcon value='add' className='pet-business-deal-add-icon' size={26} color='#fff' />
           <AtButton size='small' type='primary' className='pet-business-deal-add' formType='submit'>
-            +
           </AtButton>
         </AtForm>
         <AtTabBar
