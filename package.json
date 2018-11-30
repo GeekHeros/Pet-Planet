@@ -1,8 +1,8 @@
 {
-  "name": "Pat-Planet",
+  "name": "Pet-Planet",
   "version": "1.0.0",
   "private": true,
-  "description": "For Pat-Planet",
+  "description": "For Pet-Planet",
   "scripts": {
     "build:weapp": "taro build --type weapp",
     "build:swan": "taro build --type swan",

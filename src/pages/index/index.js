@@ -1,9 +1,10 @@
 import Taro, {Component} from '@tarojs/taro';
-import {View} from "@tarojs/components";
-import {AtTabBar, AtForm, AtButton, AtIcon} from 'taro-ui';
+import {View, Image} from "@tarojs/components";
+import {AtTabBar, AtForm, AtButton, AtIcon, AtCard} from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
+import avatar from "../../assets/keryiBarter_v.png";
 import "./index.less";
 
 
@@ -64,7 +65,14 @@ class Index extends Component {
     const {current} = homeStore;
     return (
       <View>
-        首页
+        <View className='at-row at-row--wrap'>
+          <View className='at-col at-col-6 at-col--wrap'>
+            <AtCard title='我想卖只猫' extra={1000} note='网名为Clay的用户' isFull={false} className='pet-business-list'>
+              <Image mode='aspectFill' style='width: 100%; height: 100px;' src={avatar} />
+              我有一只可爱的小猫，想要卖掉
+            </AtCard>
+          </View>
+        </View>
         <AtForm
           reportSubmit={true}
           style='border:none'

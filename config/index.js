@@ -1,5 +1,5 @@
 const config = {
-  projectName: 'Pat-Planet',
+  projectName: 'Pet-Planet',
   date: '2018-11-26',
   designWidth: 750,
   deviceRatio: {

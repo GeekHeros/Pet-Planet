@@ -7,7 +7,10 @@ import User from './pages/user';
 
 import store from './store';
 
+import 'taro-ui/dist/weapp/css/index.css';
+
 import './stylesheets/index.less';
+
 
 class App extends Component {
 
