@@ -1,5 +1,5 @@
 {
-	"miniprogramRoot": "./dist",
+	"miniprogramRoot": "dist/",
 	"projectname": "Pat-Planet",
 	"description": "For Pat-Planet",
 	"appid": "wx9840b955670cb46c",

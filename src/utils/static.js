@@ -33,18 +33,19 @@ const pageCurrentList = [
  */
 const mockCardList = [{
   title: "卖一只可爱的小猫",
-  extra: 500,
+  extra: "500",
   note: "Mix奇迹的时代",
   content: "我家小猫很可爱,有人要吗?",
   src: cat
 }, {
   title: "卖一只可爱的小白狗",
-  extra: 1000,
+  extra: "1000",
   note: "小郭",
   content: "我家小白狗很可爱,有人要吗??",
   src: white_dog
 }, {
-  extra: 1899,
+  title: "卖一只可爱的小狗狗",
+  extra: "1899",
   note: "天外肥仙",
   content: "我家小狗狗很可爱,有人要吗???",
   src: dog
