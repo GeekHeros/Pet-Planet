@@ -70,7 +70,7 @@ class Index extends Component {
                             return <View key={index} className='at-col at-col-6 at-col--wrap'>
                                 <AtCard title={card["title"]} note={card["note"]} extra={card["extra"]} className='pet-business-list'>
                                     <Image mode='aspectFill' src={card['src']} className='pet-business-list-image' />
-                                    {card['content']}
+                                    <View className='pet-business-list-content'>{card['content']}</View>
                                 </AtCard>
                             </View>
                         })
