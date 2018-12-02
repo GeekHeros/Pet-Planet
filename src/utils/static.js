@@ -33,22 +33,25 @@ const pageCurrentList = [
  */
 const mockCardList = [{
   title: "卖一只可爱的小猫",
-  extra: "500",
-  note: "Mix奇迹的时代",
-  content: "我家小猫很可爱,有人要吗?",
-  src: cat
+  price: "500",
+  username: "Mix奇迹的时代",
+  src: cat,
+  like: 36,
+  address: "北京市"
 }, {
   title: "卖一只可爱的小白狗",
-  extra: "1000",
-  note: "小郭",
-  content: "我家小白狗很可爱,有人要吗??",
-  src: white_dog
+  price: "1000",
+  username: "小郭",
+  src: white_dog,
+  like: 80,
+  address: "山东省烟台市"
 }, {
   title: "卖一只可爱的小狗狗",
-  extra: "1899",
-  note: "天外肥仙",
-  content: "我家小狗狗很可爱,有人要吗???",
-  src: dog
+  price: "1899",
+  username: "天外肥仙",
+  src: dog,
+  like: 50,
+  address: "浙江省杭州市"
 }];
 
 const staticConfig = {
