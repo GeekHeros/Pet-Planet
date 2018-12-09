@@ -1,9 +1,10 @@
 import Taro, {Component} from '@tarojs/taro';
-import {View, Image} from "@tarojs/components";
-import {AtTabBar, AtForm, AtButton, AtIcon, AtCard} from 'taro-ui';
+import {View, Image, ScrollView} from "@tarojs/components";
+import {AtTabBar, AtForm, AtButton, AtIcon, AtCard, AtLoadMore} from 'taro-ui';
 import {connect} from "@tarojs/redux";
-import {changeCurrent} from "../../actions/home";
-import {tabBarTabList, pageCurrentList, mockCardList} from "../../utils/static";
+import {changeCurrent, changePageNum, changeLoadStatus} from "../../actions/home";
+import {homeAPI} from "../../services";
+import {tabBarTabList, pageCurrentList, staticData} from "../../utils/static";
 import "./iconfont/iconfont.less";
 import "./index.less";
 
@@ -30,6 +31,30 @@ import "./index.less";
      */
     onSubmitHandler(event) {
       console.log(event);
+    },
+    /**
+     * 获取小程序首页信息
+     * @尹文楷
+     */
+    async homeInfoHandler(pageNum) {
+      if (pageNum === 1) {
+        await dispatch(changePageNum({
+          petList: []
+        }));
+      }
+      await dispatch(changePageNum({
+        pageNum
+      }));
+      await dispatch(homeAPI.homeInfoRequest.apply(this));
+    },
+    /**
+     * 改变滚动加载的AtLoadMore的状态
+     * @尹文楷
+     */
+    changeLoadStatusHandler(loadStatus) {
+      dispatch(changeLoadStatus({
+        loadStatus
+      }));
     }
   }
 })
@@ -40,11 +65,15 @@ class Index extends Component {
   };
 
   config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '首页',
+    //距离页面底部的距离
+    onReachBottomDistance: 30
   };
 
-  componentDidMount() {
-
+  async componentDidMount() {
+    const {homeInfoHandler, changeLoadStatusHandler} = this.props;
+    await changeLoadStatusHandler("more");
+    await homeInfoHandler.apply(this, [1]);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -60,45 +89,89 @@ class Index extends Component {
   componentDidHide() {
   }
 
+  onReachBottom() {
+
+  }
+
+  /**
+   * 当滚动条滚到底部的时候进行上拉加载动作
+   * @尹文楷
+   */
+  async onScrollToLower() {
+    const {homeStore, homeInfoHandler, changeLoadStatusHandler} = this.props;
+    let {pageNum, currentPetList, loadStatus} = homeStore;
+    if (currentPetList.length === staticData["pageSize"] && loadStatus === staticData["loadStatusConfig"]["more"]) {
+      await changeLoadStatusHandler(staticData["loadStatusConfig"]["loading"]);
+      await homeInfoHandler.apply(this, [++pageNum]);
+    }
+    if (currentPetList.length < staticData["pageSize"] && loadStatus === staticData["loadStatusConfig"]["more"]) {
+      await changeLoadStatusHandler(staticData["loadStatusConfig"]["noMore"]);
+    }
+  }
+
   render() {
     const {homeStore, changeCurrentHandler, onSubmitHandler} = this.props;
-    const {current} = homeStore;
+    const {current, petList, loadStatus} = homeStore;
     return (
-      <View className='pet-business'>
+      <ScrollView
+        scrollY
+        className='pet-business'
+        scrollTop={0}
+        lowerThreshold={86}
+        onScrollToLower={this.onScrollToLower}
+      >
         <View className='at-row at-row--wrap pet-business-container'>
           {
-            mockCardList && mockCardList.length > 0 && mockCardList.map((card, index) => {
-              return <View key={index} className='at-col at-col-6 at-col--wrap'>
+            petList && petList.length > 0 && petList.map((petItem, index) => {
+              let id = petItem["id"];
+              return <View key={id} className='at-col at-col-6 at-col--wrap'>
                 <AtCard title={null} extra={null} className='pet-business-list'>
-                  <Image mode='aspectFill' src={card['src']} className='pet-business-list-image'/>
-                  <View className='pet-business-list-title'>{card['title']}</View>
+                  <Image mode='aspectFill'
+                         src={petItem['cover']}
+                         className='pet-business-list-image'
+                  />
+                  <View className='pet-business-list-title'>{petItem['title']}</View>
                   <View className='pet-business-list-price'>
                     <text class='pet-business-list-price-symbol'>
                       &#165;
                     </text>
-                    {card['price']}
+                    {petItem['cost']}
                     <text class='pet-business-list-price-like'>
-                      {card['like']}人想要
+                      {petItem['wantCount']}人想要
                     </text>
                   </View>
                   <View className='pet-business-list-username'>
-                    {card['username']}
+                    {petItem['userId']}
                   </View>
                   <View className='pet-business-list-address'>
-                    <AtIcon prefixClass='iconfont' value='petPlanet-gps' className='pet-business-list-address-icon' size={12} color='#ec544c' />
-                    {card['address']}
+                    <AtIcon prefixClass='iconfont'
+                            value='petPlanet-gps'
+                            className='pet-business-list-address-icon'
+                            size={12} color='#ec544c'
+                    />
+                    {petItem['area']}
                   </View>
                 </AtCard>
               </View>
             })
           }
         </View>
+        <AtLoadMore
+          status={loadStatus}
+          moreText=''
+          className='pet-business-load-more'
+        />
         <AtForm reportSubmit={true}
                 style='border:none'
                 onSubmit={onSubmitHandler}
                 className='pet-business-deal'
         >
-          <AtIcon value='add' className='pet-business-deal-add-icon' size={26} color='#fff' />
+          <AtIcon
+            value='add'
+            className='pet-business-deal-add-icon'
+            size={26}
+            color='#fff'
+          />
           <AtButton size='small' type='primary' className='pet-business-deal-add' formType='submit'>
           </AtButton>
         </AtForm>
@@ -108,7 +181,7 @@ class Index extends Component {
           tabList={tabBarTabList}
           onClick={changeCurrentHandler}
         />
-      </View>
+      </ScrollView>
     )
   }
 }

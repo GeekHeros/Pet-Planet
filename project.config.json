@@ -4,7 +4,7 @@
 	"description": "For Pat-Planet",
 	"appid": "wx9840b955670cb46c",
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": false,
 		"postcss": false,
 		"minified": false,

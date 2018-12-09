@@ -9,3 +9,42 @@ export function changeCurrent(payload) {
     payload
   }
 }
+
+/**
+ * 改变分页码
+ * @尹文楷
+ * @param payload
+ * @returns {{payload: *, type: *}}
+ */
+export function changePageNum(payload) {
+  return {
+    type: homeConstants["CHANGE_PAGE_NUM"],
+    payload
+  }
+}
+
+/**
+ * 获取宠物交易列表
+ * @尹文楷
+ * @param payload
+ * @returns {{payload: *, type: *}}
+ */
+export function getPetList(payload) {
+  return {
+    type: homeConstants["GET_PET_LIST"],
+    payload
+  }
+}
+
+/**
+ * 改变滚动加载的AtLoadMore的状态
+ * @尹文楷
+ * @param payload
+ * @returns {{payload: *, type: *}}
+ */
+export function changeLoadStatus(payload) {
+  return {
+    type: homeConstants["CHANGE_LOAD_STATUS"],
+    payload
+  }
+}

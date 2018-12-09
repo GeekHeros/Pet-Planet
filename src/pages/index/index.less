@@ -3,10 +3,9 @@ page {
     height: 100%;
   }
 
-  view.pet-business {
+  scroll-view.pet-business {
     & {
-      height: calc(100% - 112px);
-      overflow: auto;
+      height: calc(100% - 120px);
     }
 
     form.pet-business-deal {
@@ -106,6 +105,7 @@ page {
         margin-top: 2px;
         font-size: 22px;
         color: #999;
+
         text.pet-business-list-address-icon {
           margin-right: 6px;
         }
@@ -118,6 +118,14 @@ page {
       height: 357px;
       border-top-left-radius: 12px;
       border-top-right-radius: 12px;
+    }
+
+    view.pet-business-load-more {
+      height: 72px;
+      margin-bottom: 45px;
+      .at-button {
+        border: none;
+      }
     }
   }
 }

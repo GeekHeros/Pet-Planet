@@ -1,6 +1,20 @@
-import cat from "../assets/cat.jpeg";
-import white_dog from "../assets/white_dog.jpeg";
-import dog from "../assets/dog.jpeg";
+/**
+ * 默认的一些静态数据
+ * @type {{}}
+ */
+const staticData  = {
+  pageSize: 10,
+  loadStatusConfig: {
+    more: "more",
+    loading: "loading",
+    noMore: "noMore"
+  }
+};
+/**
+ * 可配置的协议域名和端口号
+ * @type {string}
+ */
+const petPlanetPrefix = "http://47.104.74.127:8291";
 /**
  * TabBar标签页路由标题、图标以及角标配置
  * @尹文楷
@@ -26,38 +40,11 @@ const pageCurrentList = [
   "/pages/user/index"
 ];
 
-/**
- * Card列表Mock配置
- * todo 后台接口的数据模型和结构还没写出来,写出来之后要删掉
- * @type {*[]}
- */
-const mockCardList = [{
-  title: "卖一只可爱的小猫",
-  price: "500",
-  username: "Mix奇迹的时代",
-  src: cat,
-  like: 36,
-  address: "北京市"
-}, {
-  title: "卖一只可爱的小白狗",
-  price: "1000",
-  username: "小郭",
-  src: white_dog,
-  like: 80,
-  address: "山东省烟台市"
-}, {
-  title: "卖一只可爱的小狗狗",
-  price: "1899",
-  username: "天外肥仙",
-  src: dog,
-  like: 50,
-  address: "浙江省杭州市"
-}];
-
 const staticConfig = {
+  petPlanetPrefix,
   tabBarTabList,
   pageCurrentList,
-  mockCardList
+  staticData
 };
 
 module.exports = staticConfig;
