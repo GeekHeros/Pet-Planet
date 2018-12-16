@@ -12,7 +12,8 @@ import {
   AtImagePicker,
   AtList,
   AtListItem,
-  AtInput
+  AtInput,
+  AtModal
 } from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
@@ -103,6 +104,15 @@ import "./index.less";
     },
 
     /**
+     * 调起客户端小程序设置界面，返回用户设置的操作结果
+     * @尹文楷
+     * @returns {Promise<void>}
+     */
+    async openSettingHandler() {
+      await dispatch(homeAPI.openSettingRequest.apply(this));
+    },
+
+    /**
      * 发布宠物交易
      * @returns {Promise<void>}
      */
@@ -182,7 +192,11 @@ class Index extends Component {
         publishData: {
           content: null,
           files: [],
-          filePath: []
+          uploadFilterFiles: [],
+          images: [],
+          title: null,
+          cost: null,
+          formId: null
         }
       }
     });
@@ -206,6 +220,31 @@ class Index extends Component {
       title: ""
     });
     await getFormIdHandler(event.target.formId);
+  }
+
+  /**
+   * 调起客户端小程序设置界面，返回用户设置的操作结果
+   * @尹文楷
+   * @returns {Promise<void>}
+   */
+  async getOpenSettingHandler() {
+    const {openSettingHandler} = this.props;
+    await openSettingHandler.apply(this);
+  }
+
+  /**
+   * 调起客户端小程序设置界面，返回用户设置的操作结果，点击取消触发的动作
+   * @returns {Promise<void>}
+   */
+  async getModalCancelHandler() {
+    const {setAttrValueHandler} = this.props;
+    await setAttrValueHandler({
+      dialogData: {
+        publishData: {
+          isRefusedModal: false
+        }
+      }
+    });
   }
 
   /**
@@ -303,7 +342,7 @@ class Index extends Component {
     const {current, petList, loadStatus, dialogShowOrHidden, dialogData} = homeStore;
     const {isPublishOpened} = dialogShowOrHidden;
     const {publishData} = dialogData;
-    const {content, files, area, title, cost} = publishData;
+    const {content, files, area, title, cost, isRefusedModal} = publishData;
     return (
       <ScrollView
         scrollY
@@ -419,6 +458,15 @@ class Index extends Component {
                 确定发布
               </AtButton>
             </View>
+            <AtModal
+              isOpened={isRefusedModal}
+              title='温馨提示'
+              cancelText='取消'
+              confirmText='确定'
+              content='检测到您没打定位权限，是否去设置打开？'
+              onConfirm={this.getOpenSettingHandler}
+              onCancel={this.getModalCancelHandler}
+            />
           </View>
         </AtFloatLayout>
         {/*按钮发布区域: 使用formId进行发起一次有formId的模板消息请求*/}

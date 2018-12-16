@@ -20,6 +20,27 @@ function getSetting({success, fail, complete}) {
 }
 
 /**
+ * 调起客户端小程序设置界面，返回用户设置的操作结果
+ * @param success
+ * @param fail
+ * @param complete
+ * @returns {Promise<Taro.getSetting.Promised> | * | never}
+ */
+function openSetting({success, fail, complete}) {
+  return this.openSetting({
+    success({authSetting}) {
+      success(authSetting);
+    },
+    fail(res) {
+      fail(res);
+    },
+    complete(res) {
+      complete(res);
+    }
+  });
+}
+
+/**
  * 用于向用户发起授权请求
  * @param scope
  * @param success
@@ -64,6 +85,7 @@ function chooseLocation({success, fail, complete}) {
 
 module.exports = {
   getSetting,
+  openSetting,
   authorize,
   chooseLocation
 };

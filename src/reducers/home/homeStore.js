@@ -26,6 +26,8 @@ const defaultState = {
   //@尹文楷
   dialogData: {
     publishData: {
+      //用来校验用户是否拒绝了获取定位授权请求
+      isRefusedModal: false,
       //用来校验用户是否授权获取定位
       isLocationAuthorize: false,
       //用于对于宠物的描述

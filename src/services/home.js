@@ -138,6 +138,42 @@ function getSettingRequest() {
 }
 
 /**
+ * 调起客户端小程序设置界面，返回用户设置的操作结果
+ * @尹文楷
+ */
+function openSettingRequest() {
+  return async (dispatch) => {
+    return Tools.openSettingConfig({
+      success: async (authSetting) => {
+        await dispatch(setAttrValue({
+          dialogData: {
+            publishData: {
+              isRefusedModal: false
+            }
+          }
+        }));
+        if (authSetting["scope.userLocation"]) {
+          await dispatch(chooseLocationRequest());
+          await dispatch(setAttrValue({
+            dialogData: {
+              publishData: {
+                isLocationAuthorize: true
+              }
+            }
+          }));
+        }
+      },
+      fail: async (res) => {
+
+      },
+      complete: async (res) => {
+
+      }
+    });
+  }
+}
+
+/**
  * 获取用户当前的位置信息
  * @尹文楷
  */
@@ -182,7 +218,13 @@ function authorizeRequest(scope) {
         }));
       },
       fail: async (res) => {
-
+        await dispatch(setAttrValue({
+          dialogData: {
+            publishData: {
+              isRefusedModal: true
+            }
+          }
+        }));
       },
       complete: async (res) => {
 
@@ -255,6 +297,7 @@ const homeAPI = {
   getFormIdRequest,
   getSettingRequest,
   authorizeRequest,
+  openSettingRequest,
   chooseLocationRequest,
   publishItemRequest
 };

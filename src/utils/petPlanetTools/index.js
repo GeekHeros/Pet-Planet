@@ -3,7 +3,7 @@ import multipleToNull from "./multipleToNull";
 import compareAdd from "./compareAdd";
 import requests from "./requests";
 import uploadFile from "./uploadFile";
-import {getSetting, chooseLocation, authorize} from "./getSetting";
+import {getSetting, chooseLocation, authorize, openSetting} from "./getSetting";
 
 const PetPlanetTools = (function () {
   class PetPlanetTools {
@@ -53,6 +53,15 @@ const PetPlanetTools = (function () {
      */
     getSettingConfig(params) {
       return getSetting.apply(this.wx, [params]);
+    }
+
+    /**
+     * 调起客户端小程序设置界面，返回用户设置的操作结果
+     * @尹文楷
+     * @param params
+     */
+    openSettingConfig(params) {
+      return openSetting.apply(this.wx, [params]);
     }
 
     /**
