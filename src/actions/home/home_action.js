@@ -48,3 +48,15 @@ export function changeLoadStatus(payload) {
     payload
   }
 }
+
+/**
+ * 改变redux store里面的数据状态
+ * @尹文楷
+ * @param payload
+ */
+export function setAttrValue(payload) {
+  return {
+    type: homeConstants["SET_ATTR_VALUE"],
+    payload
+  }
+}

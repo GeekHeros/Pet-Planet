@@ -1,5 +1,7 @@
 import {homeConstants} from "../../constants";
 import {staticData} from "../../utils/static";
+import Tools from "../../utils/petPlanetTools";
+import _ from "lodash";
 
 
 const defaultState = {
@@ -14,7 +16,26 @@ const defaultState = {
   currentPetList: [],
   //组件状态，more 状态显示查看更多按钮，loading 状态显示加载状态，noMore 显示无更多数据
   //@尹文楷
-  loadStatus: 'more'
+  loadStatus: 'more',
+  //用于统一处理弹框是否显示
+  //@尹文楷
+  dialogShowOrHidden: {
+    isPublishOpened: false
+  },
+  //用于统一处理弹框中的数据
+  //@尹文楷
+  dialogData: {
+    publishData: {
+      //用于对于宠物的描述
+      content: null,
+      //用于上传宠物的图片
+      files: [],
+      //用于上传的图片
+      uploadFilterFiles: [],
+      //用于发布接口的图片
+      images: []
+    }
+  }
 };
 
 /**
@@ -35,6 +56,26 @@ export default function homeStore(state = defaultState, {type, payload}) {
     //改变滚动加载的AtLoadMore的状态
     case homeConstants["CHANGE_LOAD_STATUS"]:
       return Object.assign({}, state, payload);
+    case homeConstants["SET_ATTR_VALUE"]:
+      return (function multiple(state, newState) {
+        let stateChange = state;
+        //用于在不按照state模板的情况下,payload添加属性和属性值的情况下使用
+        stateChange = Tools.compare(stateChange, newState);
+        for (let [key, value] of Object.entries(stateChange)) {
+          //这里严格判断value是否是对象{},不能使用typeof,原因自己查
+          if (Object.prototype.toString.call(value) === "[object Object]" && newState[key] !== undefined && newState[key] !== null) {
+            stateChange[key] = multiple(value, newState[key]);
+          } else {
+            if (newState[key] !== undefined && newState[key] !== null) {
+              stateChange[key] = newState[key];
+            }
+            if (newState[key] === null) {
+              stateChange[key] = Tools.toNullAll(stateChange[key]);
+            }
+          }
+        }
+        return stateChange;
+      })(_.cloneDeep(state), payload);
     default:
       break;
   }

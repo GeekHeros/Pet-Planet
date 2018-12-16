@@ -33,15 +33,6 @@ page {
       line-height: 91px;
     }
 
-    text.pet-business-deal-add-icon {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      line-height: 100px;
-      z-index: 802;
-    }
-
     view.pet-business-list {
       margin: 0 9px 14px;
 
@@ -123,8 +114,66 @@ page {
     view.pet-business-load-more {
       height: 72px;
       margin-bottom: 45px;
+
       .at-button {
         border: none;
+      }
+    }
+
+    view.pet-business-publish {
+      .at-float-layout__container {
+        min-height: auto;
+        max-height: initial;
+        height: 100%;
+
+        .layout-header {
+          text-align: center;
+          background-color: #fff;
+          border-bottom: 1px solid #eee;
+
+          &__title {
+            padding: 0;
+          }
+
+          &__icon {
+            left: 18px;
+            right: inherit;
+          }
+        }
+
+        .layout-body {
+          min-height: auto;
+          max-height: initial;
+          height: 100%;
+
+          &__content {
+            min-height: auto;
+            max-height: initial;
+            height: 100%;
+          }
+        }
+      }
+
+      &-content {
+        background-color: #f1f1f1;
+
+        &-top {
+          margin-bottom: 20px;
+        }
+
+        &-description {
+          border: none;
+        }
+
+        &-images {
+          background-color: #fff;
+
+          .at-image-picker {
+            &__choose-btn {
+              border: 1px solid #ccc;
+            }
+          }
+        }
       }
     }
   }

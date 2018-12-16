@@ -1,10 +1,17 @@
-import {changeCurrent, changePageNum, getPetList, changeLoadStatus} from "./home_action";
+import {
+  changeCurrent,
+  changePageNum,
+  getPetList,
+  changeLoadStatus,
+  setAttrValue
+} from "./home_action";
 
 const action = {
   changeCurrent,
   changePageNum,
   getPetList,
-  changeLoadStatus
+  changeLoadStatus,
+  setAttrValue
 };
 
 module.exports = action;

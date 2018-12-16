@@ -7,8 +7,12 @@ function requests ({url, method, header, data, success, fail, complete}) {
     success({data, statusCode, header}) {
       success(data);
     },
-    fail,
-    complete
+    fail({data}) {
+      fail(data);
+    },
+    complete({data}) {
+      success(data);
+    }
   });
 }
 
