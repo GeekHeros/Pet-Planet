@@ -9,7 +9,10 @@ import {
   AtLoadMore,
   AtFloatLayout,
   AtTextarea,
-  AtImagePicker
+  AtImagePicker,
+  AtList,
+  AtListItem,
+  AtInput
 } from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
@@ -30,9 +33,9 @@ import "./index.less";
      * 通过onClick事件来更新current值变化
      * @param value
      */
-    changeCurrentHandler(value) {
-      dispatch(changeCurrent({current: value}));
-      Taro.redirectTo({
+    async changeCurrentHandler(value) {
+      await dispatch(changeCurrent({current: value}));
+      await Taro.redirectTo({
         url: pageCurrentList[`${value}`]
       });
     },
@@ -60,15 +63,53 @@ import "./index.less";
     async publishImageUploadHandler() {
       await dispatch(homeAPI.publishImageUploadRequest.apply(this));
     },
+
+    /**
+     * formId收集
+     * @尹文楷
+     * @params formId
+     * @returns {Promise<void>}
+     */
+    async getFormIdHandler(formId) {
+      await dispatch(homeAPI.getFormIdRequest(formId));
+    },
+
+    /**
+     * 获取用户授权设置
+     * @尹文楷
+     * @returns {Promise<void>}
+     */
+    async getSettingHandler() {
+      await dispatch(homeAPI.getSettingRequest.apply(this));
+    },
+
     /**
      * 改变滚动加载的AtLoadMore的状态
      * @尹文楷
      */
-    changeLoadStatusHandler(loadStatus) {
-      dispatch(changeLoadStatus({
+    async changeLoadStatusHandler(loadStatus) {
+      await dispatch(changeLoadStatus({
         loadStatus
       }));
     },
+
+    /**
+     * 向用户发起授权请求
+     * @尹文楷
+     * @returns {Promise<void>}
+     */
+    async authorizeHandler(scope) {
+      await dispatch(homeAPI.authorizeRequest.apply(this, [scope]));
+    },
+
+    /**
+     * 发布宠物交易
+     * @returns {Promise<void>}
+     */
+    async publishItemHandler() {
+      await dispatch(homeAPI.publishItemRequest.apply(this));
+    },
+
     /**
      * 改变redux store里面的数据状态
      * @尹文楷
@@ -155,8 +196,7 @@ class Index extends Component {
    * @尹文楷
    */
   async onSubmitHandler(event) {
-    console.log(event);
-    const {setAttrValueHandler} = this.props;
+    const {setAttrValueHandler, getFormIdHandler} = this.props;
     await setAttrValueHandler({
       dialogShowOrHidden: {
         isPublishOpened: true
@@ -165,6 +205,7 @@ class Index extends Component {
     await Taro.setNavigationBarTitle({
       title: ""
     });
+    await getFormIdHandler(event.target.formId);
   }
 
   /**
@@ -172,12 +213,14 @@ class Index extends Component {
    * @尹文楷
    * @returns {Promise<void>}
    */
-  async onTextChangeHandler(event) {
+  async onTextChangeHandler(key, event) {
     const {setAttrValueHandler} = this.props;
+    let value;
+    value = Object.prototype.toString.call(event) === "[object Object]" ? event.target.value : event;
     await setAttrValueHandler({
       dialogData: {
         publishData: {
-          content: event.target.value
+          [key]: value
         }
       }
     });
@@ -232,12 +275,35 @@ class Index extends Component {
     }
   }
 
+  /**
+   * 向用户发起授权请求
+   * @尹文楷
+   **/
+  async getAuthorizeHandler(e) {
+    const {getSettingHandler, authorizeHandler} = this.props;
+    await getSettingHandler();
+    await authorizeHandler.apply(this, ["scope.userLocation"]);
+    //取消冒泡事件
+    e.stopPropagation();
+  }
+
+  /**
+   * 发布宠物交易
+   * @尹文楷
+   **/
+  async onPublishHandler(e) {
+    const {publishItemHandler} = this.props;
+    await publishItemHandler.apply(this);
+    //取消冒泡事件
+    e.stopPropagation();
+  }
+
   render() {
     const {homeStore, changeCurrentHandler} = this.props;
     const {current, petList, loadStatus, dialogShowOrHidden, dialogData} = homeStore;
     const {isPublishOpened} = dialogShowOrHidden;
     const {publishData} = dialogData;
-    const {content, files} = publishData;
+    const {content, files, area, title, cost} = publishData;
     return (
       <ScrollView
         scrollY
@@ -246,6 +312,7 @@ class Index extends Component {
         lowerThreshold={86}
         onScrollToLower={this.onScrollToLower}
       >
+        {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
         <View className='at-row at-row--wrap pet-business-container'>
           {
             petList && petList.length > 0 && petList.map((petItem) => {
@@ -282,11 +349,13 @@ class Index extends Component {
             })
           }
         </View>
+        {/*上拉加载更多区域*/}
         <AtLoadMore
           status={loadStatus}
           moreText=''
           className='pet-business-load-more'
         />
+        {/*宠物交易发布区域*/}
         <AtFloatLayout
           title='发布'
           isOpened={isPublishOpened}
@@ -298,9 +367,9 @@ class Index extends Component {
               <AtTextarea
                 count={false}
                 textOverflowForbidden={false}
-                height={210}
+                height={240}
                 value={content}
-                onChange={this.onTextChangeHandler}
+                onChange={this.onTextChangeHandler.bind(this, "content")}
                 placeholder='描述一下宝贝转手的原因、入手渠道和使用感受'
                 className='pet-business-publish-content-description'
               />
@@ -313,9 +382,46 @@ class Index extends Component {
                 showAddBtn
                 onChange={this.onImageChangeHandler}
               />
+              <AtList className='pet-business-publish-content-position'
+                      hasBorder={false}
+              >
+                <AtListItem iconInfo={{prefixClass: 'iconfont', value: 'petPlanet-gps', size: 20, color: '#000'}}
+                            hasBorder={false}
+                            title={area}
+                            onClick={this.getAuthorizeHandler}
+                />
+              </AtList>
+            </View>
+            <View className='pet-business-publish-content-bottom'>
+              <AtInput
+                name='title'
+                type='text'
+                title='标题'
+                placeholder='请输入标题'
+                value={title}
+                className='pet-business-publish-content-input pet-business-publish-content-title'
+                onChange={this.onTextChangeHandler.bind(this, "title")}
+              />
+              <AtInput
+                name='cost'
+                type='number'
+                title='一口价'
+                placeholder='请输入交易宠物的价格'
+                value={cost}
+                className='pet-business-publish-content-input pet-business-publish-content-price'
+                onChange={this.onTextChangeHandler.bind(this, "cost")}
+              />
+            </View>
+            <View className='pet-business-publish-content-button'>
+              <AtButton type='primary'
+                        onClick={this.onPublishHandler}
+              >
+                确定发布
+              </AtButton>
             </View>
           </View>
         </AtFloatLayout>
+        {/*按钮发布区域: 使用formId进行发起一次有formId的模板消息请求*/}
         <AtForm reportSubmit={true}
                 style='border:none'
                 onSubmit={this.onSubmitHandler}
@@ -330,6 +436,7 @@ class Index extends Component {
             />
           </AtButton>
         </AtForm>
+        {/*导航区域: 分首页和我两个部分*/}
         <AtTabBar
           fixed
           current={current}

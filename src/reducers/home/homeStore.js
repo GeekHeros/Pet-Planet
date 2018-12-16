@@ -26,6 +26,8 @@ const defaultState = {
   //@尹文楷
   dialogData: {
     publishData: {
+      //用来校验用户是否授权获取定位
+      isLocationAuthorize: false,
       //用于对于宠物的描述
       content: null,
       //用于上传宠物的图片
@@ -33,7 +35,17 @@ const defaultState = {
       //用于上传的图片
       uploadFilterFiles: [],
       //用于发布接口的图片
-      images: []
+      images: [],
+      //发布时用于提供定位
+      area: "点击定位",
+      //用于对于宠物的标题
+      title: null,
+      //用于对于宠物的价格
+      cost: null,
+      //是否含有视频
+      includeVideo: false,
+      //用于对于发起模板消息的formId
+      formId: null
     }
   }
 };
