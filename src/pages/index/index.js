@@ -31,6 +31,14 @@ import "./index.less";
 }, (dispatch) => {
   return {
     /**
+     * 调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
+     * @尹文楷
+     * @returns {Promise<void>}
+     */
+    async getLoginSessionHandler(homeInfoHandler) {
+      await dispatch(homeAPI.getLoginSession.apply(this, [homeInfoHandler]));
+    },
+    /**
      * 通过onClick事件来更新current值变化
      * @param value
      */
@@ -72,7 +80,7 @@ import "./index.less";
      * @returns {Promise<void>}
      */
     async getFormIdHandler(formId) {
-      await dispatch(homeAPI.getFormIdRequest(formId));
+      await dispatch(homeAPI.getFormIdRequest.apply(this, [formId]));
     },
 
     /**
@@ -140,9 +148,9 @@ class Index extends Component {
   };
 
   async componentDidMount() {
-    const {homeInfoHandler, changeLoadStatusHandler} = this.props;
+    const {homeInfoHandler, changeLoadStatusHandler, getLoginSessionHandler} = this.props;
+    await getLoginSessionHandler.apply(this, [homeInfoHandler]);
     await changeLoadStatusHandler("more");
-    await homeInfoHandler.apply(this, [1]);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -156,10 +164,6 @@ class Index extends Component {
   }
 
   componentDidHide() {
-  }
-
-  onReachBottom() {
-
   }
 
   /**
@@ -219,7 +223,7 @@ class Index extends Component {
     await Taro.setNavigationBarTitle({
       title: ""
     });
-    await getFormIdHandler(event.target.formId);
+    await getFormIdHandler.apply(this, [event.target.formId]);
   }
 
   /**

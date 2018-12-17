@@ -4,6 +4,7 @@ import compareAdd from "./compareAdd";
 import requests from "./requests";
 import uploadFile from "./uploadFile";
 import {getSetting, chooseLocation, authorize, openSetting} from "./getSetting";
+import loginCode from "./loginCode";
 
 const PetPlanetTools = (function () {
   class PetPlanetTools {
@@ -44,6 +45,15 @@ const PetPlanetTools = (function () {
      */
     uploadFile(params) {
       return uploadFile.apply(this.wx, [params]);
+    }
+
+    /**
+     * 调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
+     * @尹文楷
+     * @param params
+     */
+    login(params) {
+      return loginCode.apply(this.wx, [params]);
     }
 
     /**

@@ -4,13 +4,65 @@ import {petPlanetPrefix, staticData} from "../utils/static";
 import {getPetList, changeLoadStatus, setAttrValue, changePageNum} from "../actions/home";
 
 /**
+ * 调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
+ * @尹文楷
+ */
+function getLoginSession(homeInfoHandler) {
+  return async (dispatch) => {
+    return await Tools.login({
+      timeout: 5000,
+      success: async (code) => {
+        await dispatch(getLoginCookie.apply(this, [code, homeInfoHandler]));
+      },
+      fail: async (res) => {
+
+      },
+      complete: async (res) => {
+
+      }
+    });
+  };
+}
+
+/**
+ * 登录,将微信与后台服务器绑定,建立会话
+ * @尹文楷
+ */
+function getLoginCookie(code, homeInfoHandler) {
+  return async (dispatch) => {
+    return await Tools.request({
+      url: `${petPlanetPrefix}/tinySession/login`,
+      method: "GET",
+      header: {
+        "content-type": "application/json"
+      },
+      data: {
+        code
+      },
+      success: async (data, statusCode, header) => {
+        await dispatch(setAttrValue({
+          cookie: header["Set-Cookie"]
+        }));
+        await homeInfoHandler.apply(this, [1]);
+      },
+      fail: async (res) => {
+
+      },
+      complete: async (res) => {
+
+      }
+    });
+  };
+}
+
+/**
  * 获取卖家想要交易售卖的宠物列表
  * @returns {function(*): (never|Promise<Taro.request.Promised<any>>|Promise<TaroH5.request.Promised>|*)}
  */
 function homeInfoRequest() {
   return async (dispatch) => {
     const {homeStore} = this.props;
-    const {pageSize, pageNum, petList} = homeStore;
+    const {pageSize, pageNum, petList, cookie} = homeStore;
     const params = {
       pageSize,
       pageNum
@@ -19,10 +71,11 @@ function homeInfoRequest() {
       url: `${petPlanetPrefix}/tinyHome/homeInfo`,
       method: "GET",
       header: {
-        "content-type": "application/x-www-form-urlencoded"
+        "content-type": "application/x-www-form-urlencoded",
+        "cookie": cookie
       },
       data: params,
-      success: async (data) => {
+      success: async (data, statusCode, header) => {
         if (data.items.length > 0) {
           let petList_new = [...petList, ...data.items];
           await dispatch(getPetList({
@@ -48,17 +101,26 @@ function homeInfoRequest() {
  */
 function getFormIdRequest(formId) {
   return async (dispatch) => {
+    const {homeStore} = this.props;
+    const {cookie} = homeStore;
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyHome/formId`,
       method: "POST",
       header: {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "cookie": cookie
       },
       data: {
         formId
       },
-      success: async (data) => {
-        console.log(data);
+      success: async (data, statusCode, header) => {
+        await dispatch(setAttrValue({
+          dialogData: {
+            publishData: {
+              formId
+            }
+          }
+        }));
       },
       complete: async (data) => {
 
@@ -240,9 +302,10 @@ function authorizeRequest(scope) {
 function publishItemRequest() {
   return async (dispatch) => {
     const {homeStore} = this.props;
-    const {dialogData} = homeStore;
+    const {dialogData, cookie} = homeStore;
     const {publishData} = dialogData;
     const {content, images, area, title, cost, includeVideo, formId} = publishData;
+    let cover = images[0];
     const params = {
       content,
       images,
@@ -250,16 +313,18 @@ function publishItemRequest() {
       title,
       cost,
       includeVideo,
-      formId
+      formId,
+      cover
     };
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyHome/publishItem`,
       method: "POST",
       header: {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "cookie": cookie
       },
       data: params,
-      success: async (data) => {
+      success: async (data, statusCode, header) => {
         await dispatch(setAttrValue({
           dialogShowOrHidden: {
             isPublishOpened: false
@@ -299,7 +364,9 @@ const homeAPI = {
   authorizeRequest,
   openSettingRequest,
   chooseLocationRequest,
-  publishItemRequest
+  publishItemRequest,
+  getLoginSession,
+  getLoginCookie
 };
 
 export default homeAPI;

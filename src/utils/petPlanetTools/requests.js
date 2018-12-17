@@ -9,20 +9,20 @@
  * @param complete
  * @returns {*|never|Promise<Taro.request.Promised<any>>|Promise<TaroH5.request.Promised>}
  */
-function requests ({url, method, header, data, success, fail, complete}) {
+function requests({url, method, header, data, success, fail, complete}) {
   return this.request({
     url,
     method,
     header,
     data,
-    success({data, statusCode, header}) {
-      success(data);
+    success({data: responseData, statusCode, header: responseHeader}) {
+      success(responseData, statusCode, responseHeader);
     },
-    fail({data}) {
-      fail(data);
+    fail(res) {
+      fail(res);
     },
-    complete({data}) {
-      success(data);
+    complete(res) {
+      complete(res);
     }
   });
 }

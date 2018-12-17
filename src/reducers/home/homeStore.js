@@ -22,6 +22,9 @@ const defaultState = {
   dialogShowOrHidden: {
     isPublishOpened: false
   },
+  //用于登录,将微信与后台服务器绑定,建立会话
+  //@尹文楷
+  cookie: null,
   //用于统一处理弹框中的数据
   //@尹文楷
   dialogData: {
