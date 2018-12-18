@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro';
-import {View, Image, ScrollView, Button} from "@tarojs/components";
+import {View, Image, ScrollView} from "@tarojs/components";
 import {
   AtTabBar,
   AtForm,
@@ -393,7 +393,7 @@ class Index extends Component {
         lowerThreshold={86}
         onScrollToLower={this.onScrollToLower}
       >
-        <AtMessage/>
+        <AtMessage />
         {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
         <View className='at-row at-row--wrap pet-business-container'>
           {
