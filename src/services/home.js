@@ -76,15 +76,13 @@ function homeInfoRequest() {
       },
       data: params,
       success: async (data, statusCode, header) => {
-        if (data.items.length > 0) {
-          let petList_new = [...petList, ...data.items];
-          await dispatch(getPetList({
-            petList: petList_new,
-            currentPetList: data.items
-          }));
-        }
+        let petList_new = [...petList, ...data.items];
+        await dispatch(getPetList({
+          petList: petList_new,
+          currentPetList: data.items
+        }));
         await dispatch(changeLoadStatus({
-          loadStatus: staticData["loadStatusConfig"]["more"]
+          loadStatus: data.items.length > 0 ? staticData["loadStatusConfig"]["more"] : staticData["loadStatusConfig"]["noMore"]
         }));
       },
       complete: async (res) => {

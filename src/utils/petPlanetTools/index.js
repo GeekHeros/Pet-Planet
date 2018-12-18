@@ -7,9 +7,88 @@ import {getSetting, chooseLocation, authorize, openSetting} from "./getSetting";
 import loginCode from "./loginCode";
 
 const PetPlanetTools = (function () {
+  //用于表单保存校验的规则
+  //@尹文楷
+  let verifyList = new WeakMap();
+  //用于表单校验的规则函数
+  //@尹文楷
+  let rulesList = {
+    /**
+     * 判断输入的、选择的、图片组或者弹浮动窗值是否为空值
+     * @尹文楷
+     * @param value
+     * @param type
+     * @param errMsg
+     * @returns {boolean}
+     */
+    isEmpty(value, type, errMsg) {
+      if (value === "" || value === false || value === undefined || value === null || value.length === 0) {
+        Taro.atMessage({
+          type,
+          message: errMsg
+        });
+        return false;
+      }
+    }
+  };
+
   class PetPlanetTools {
     constructor() {
       this.wx = Taro;
+      verifyList.set(this, []);
+    }
+
+    /**
+     * 用于添加校验规则
+     * @param val
+     * @param rules
+     * @尹文楷
+     */
+    addRules(val, rules) {
+      let list = verifyList.get(this);
+      rules.forEach((ruleItem, ruleIndex) => {
+        list = [...list, (() => {
+          let rule = ruleItem["rule"],
+            errMsg = ruleItem["errMsg"];
+          let params = rule.split(":");
+          let _rule = params.shift();
+          params.unshift(val);
+          let typeErrMsg = errMsg.split(":");
+          let type = typeErrMsg.shift();
+          params = [...params, type, ...typeErrMsg];
+          return () => {
+            return rulesList[_rule].apply(this, params);
+          };
+        })()];
+      });
+      verifyList.set(this, list);
+      return this;
+    }
+
+    /**
+     * 执行校验规则
+     * @尹文楷
+     */
+    execute() {
+      let list = verifyList.get(this);
+      let _execute;
+      for (let [key, value] of list.entries()) {
+        _execute = value.apply(this);
+        if (_execute === false) {
+          this.clear();
+          return _execute;
+        }
+      }
+      this.clear();
+      return true;
+    }
+
+    /**
+     * 清空校验规则
+     * @尹文楷
+     */
+    clear() {
+      verifyList.set(this, []);
     }
 
     /**

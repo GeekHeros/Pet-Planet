@@ -13,12 +13,14 @@ import {
   AtList,
   AtListItem,
   AtInput,
-  AtModal
+  AtModal,
+  AtMessage
 } from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
 import {homeAPI} from "../../services";
 import {tabBarTabList, pageCurrentList, staticData} from "../../utils/static";
+import Tools from "../../utils/petPlanetTools";
 import "./iconfont/iconfont.less";
 import "./index.less";
 
@@ -335,12 +337,46 @@ class Index extends Component {
   }
 
   /**
+   * 用于表单校验的规则函数
+   * @尹文楷
+   * @returns {Promise<void>}
+   */
+  verify() {
+    const {homeStore} = this.props;
+    const {dialogData} = homeStore;
+    const {publishData} = dialogData;
+    const {content, images, isLocationAuthorize, title, cost, formId} = publishData;
+    return Tools.addRules(content, [{
+      rule: "isEmpty",
+      errMsg: "warning:宠物描述不能为空"
+    }]).addRules(images, [{
+      rule: "isEmpty",
+      errMsg: "warning:图片组不能为空"
+    }]).addRules(isLocationAuthorize, [{
+      rule: "isEmpty",
+      errMsg: "warning:必须获取定位"
+    }]).addRules(title, [{
+      rule: "isEmpty",
+      errMsg: "warning:标题不能为空"
+    }]).addRules(cost, [{
+      rule: "isEmpty",
+      errMsg: "warning:价格不能为空"
+    }]).addRules(formId, [{
+      rule: "isEmpty",
+      errMsg: "warning:模板消息id不能为空"
+    }]).execute();
+  }
+
+  /**
    * 发布宠物交易
    * @尹文楷
    **/
-  async onPublishHandler(event) {
+  async onPublishHandler() {
     const {publishItemHandler} = this.props;
-    await publishItemHandler.apply(this);
+    const {verify} = this;
+    if (verify.apply(this)) {
+      await publishItemHandler.apply(this);
+    }
   }
 
   render() {
@@ -357,6 +393,7 @@ class Index extends Component {
         lowerThreshold={86}
         onScrollToLower={this.onScrollToLower}
       >
+        <AtMessage/>
         {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
         <View className='at-row at-row--wrap pet-business-container'>
           {
