@@ -1,5 +1,5 @@
 import Taro, {Component} from '@tarojs/taro';
-import {View, Image, ScrollView} from "@tarojs/components";
+import {View, Image, ScrollView, Button} from "@tarojs/components";
 import {
   AtTabBar,
   AtForm,
@@ -132,8 +132,8 @@ import "./index.less";
      * 改变redux store里面的数据状态
      * @尹文楷
      */
-    setAttrValueHandler(payload) {
-      dispatch(setAttrValue(payload));
+    async setAttrValueHandler(payload) {
+      await dispatch(setAttrValue(payload));
     }
   }
 })
@@ -187,23 +187,27 @@ class Index extends Component {
    * @returns {Promise<void>}
    */
   async onPublishClose() {
-    const {setAttrValueHandler} = this.props;
-    await setAttrValueHandler({
-      dialogShowOrHidden: {
-        isPublishOpened: false
-      },
-      dialogData: {
-        publishData: {
-          content: null,
-          files: [],
-          uploadFilterFiles: [],
-          images: [],
-          title: null,
-          cost: null,
-          formId: null
+    const {setAttrValueHandler, homeStore} = this.props;
+    const {dialogShowOrHidden} = homeStore;
+    const {isPublishOpened} = dialogShowOrHidden;
+    if (isPublishOpened) {
+      await setAttrValueHandler({
+        dialogShowOrHidden: {
+          isPublishOpened: false
+        },
+        dialogData: {
+          publishData: {
+            content: null,
+            files: [],
+            uploadFilterFiles: [],
+            images: [],
+            title: null,
+            cost: null,
+            formId: null
+          }
         }
-      }
-    });
+      });
+    }
     await Taro.setNavigationBarTitle({
       title: "首页"
     });
@@ -334,11 +338,9 @@ class Index extends Component {
    * 发布宠物交易
    * @尹文楷
    **/
-  async onPublishHandler(e) {
+  async onPublishHandler(event) {
     const {publishItemHandler} = this.props;
     await publishItemHandler.apply(this);
-    //取消冒泡事件
-    e.stopPropagation();
   }
 
   render() {
@@ -456,9 +458,7 @@ class Index extends Component {
               />
             </View>
             <View className='pet-business-publish-content-button'>
-              <AtButton type='primary'
-                        onClick={this.onPublishHandler}
-              >
+              <AtButton type='primary' onClick={this.onPublishHandler}>
                 确定发布
               </AtButton>
             </View>

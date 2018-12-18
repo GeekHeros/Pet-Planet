@@ -74,8 +74,8 @@ export default function homeStore(state = defaultState, {type, payload}) {
     case homeConstants["CHANGE_LOAD_STATUS"]:
       return Object.assign({}, state, payload);
     case homeConstants["SET_ATTR_VALUE"]:
-      return (function multiple(state, newState) {
-        let stateChange = state;
+      return (function multiple(oldState, newState) {
+        let stateChange = oldState;
         //用于在不按照state模板的情况下,payload添加属性和属性值的情况下使用
         stateChange = Tools.compare(stateChange, newState);
         for (let [key, value] of Object.entries(stateChange)) {
@@ -87,7 +87,7 @@ export default function homeStore(state = defaultState, {type, payload}) {
               stateChange[key] = newState[key];
             }
             if (newState[key] === null) {
-              stateChange[key] = Tools.toNullAll(stateChange[key]);
+              stateChange[key] = null;
             }
           }
         }
