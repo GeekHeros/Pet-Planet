@@ -50,7 +50,9 @@ const defaultState = {
       //是否含有视频
       includeVideo: false,
       //用于对于发起模板消息的formId
-      formId: null
+      formId: null,
+      //用于卖方的联系方式
+      contractInfo: null
     }
   }
 };

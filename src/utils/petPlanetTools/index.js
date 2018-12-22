@@ -46,21 +46,37 @@ const PetPlanetTools = (function () {
      */
     addRules(val, rules) {
       let list = verifyList.get(this);
-      rules.forEach((ruleItem, ruleIndex) => {
-        list = [...list, (() => {
-          let rule = ruleItem["rule"],
-            errMsg = ruleItem["errMsg"];
-          let params = rule.split(":");
-          let _rule = params.shift();
-          params.unshift(val);
-          let typeErrMsg = errMsg.split(":");
-          let type = typeErrMsg.shift();
-          params = [...params, type, ...typeErrMsg];
-          return () => {
-            return rulesList[_rule].apply(this, params);
-          };
-        })()];
-      });
+      let valList = [];
+      if (Object.prototype.toString.call(val) === "[object Array]") {
+        valList = [...val];
+      } else {
+        valList = [val];
+      }
+      for (let [val_key, val_item] of valList.entries()) {
+        rules.forEach((ruleItem, ruleIndex) => {
+          list = [...list, (() => {
+            let rule = ruleItem["rule"],
+              errMsg = ruleItem["errMsg"],
+              errMsg_arr = [];
+            if (Object.prototype.toString.call(errMsg) === "[object Array]") {
+              errMsg_arr = [...errMsg];
+            } else {
+              errMsg_arr = [errMsg];
+            }
+            return () => {
+              let params = rule.split(":");
+              let _rule = params.shift();
+              let typeErrMsg = [];
+              let type = "";
+              params.unshift(val_item);
+              typeErrMsg = errMsg_arr[val_key].split(":");
+              type = typeErrMsg.shift();
+              params = [...params, type, ...typeErrMsg];
+              return rulesList[_rule].apply(this, params);
+            };
+          })()];
+        });
+      }
       verifyList.set(this, list);
       return this;
     }

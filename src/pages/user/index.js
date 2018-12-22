@@ -4,6 +4,7 @@ import {AtTabBar, AtAvatar, AtIcon} from "taro-ui";
 import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
+import prompt from "../../constants/prompt";
 
 import "./iconfont/iconfont.less";
 import "./user.less";

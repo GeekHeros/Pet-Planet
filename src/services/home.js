@@ -302,7 +302,7 @@ function publishItemRequest() {
     const {homeStore} = this.props;
     const {dialogData, cookie} = homeStore;
     const {publishData} = dialogData;
-    const {content, images, area, title, cost, includeVideo, formId} = publishData;
+    const {content, images, area, title, cost, includeVideo, formId, contractInfo} = publishData;
     let cover = images[0];
     const params = {
       content,
@@ -312,7 +312,8 @@ function publishItemRequest() {
       cost,
       includeVideo,
       formId,
-      cover
+      cover,
+      // contractInfo
     };
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyHome/publishItem`,
@@ -335,7 +336,8 @@ function publishItemRequest() {
               images: [],
               title: null,
               cost: null,
-              formId: null
+              formId: null,
+              contractInfo: null
             }
           }
         }));
@@ -354,6 +356,31 @@ function publishItemRequest() {
   };
 }
 
+/**
+ * 获取宠物发布之后的内容详情
+ * @returns {function(*): (never|Promise<Taro.request.Promised<any>>|Promise<TaroH5.request.Promised>|*)}
+ */
+function getPetDetailRequest(id) {
+  return async (dispatch) => {
+    const {homeStore} = this.props;
+    const {cookie} = homeStore;
+    return await Tools.request({
+      url: `${petPlanetPrefix}/tinyComms/${id}`,
+      method: "GET",
+      header: {
+        "content-type": "application/json",
+        "cookie": cookie
+      },
+      success: async (data, statusCode, header) => {
+        console.log(data);
+      },
+      complete: async (res) => {
+
+      }
+    });
+  };
+}
+
 const homeAPI = {
   homeInfoRequest,
   publishImageUploadRequest,
@@ -364,6 +391,7 @@ const homeAPI = {
   chooseLocationRequest,
   publishItemRequest,
   getLoginSession,
+  getPetDetailRequest,
   getLoginCookie
 };
 

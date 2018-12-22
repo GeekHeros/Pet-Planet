@@ -21,6 +21,7 @@ import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../.
 import {homeAPI} from "../../services";
 import {tabBarTabList, pageCurrentList, staticData} from "../../utils/static";
 import Tools from "../../utils/petPlanetTools";
+import prompt from "../../constants/prompt";
 import "./iconfont/iconfont.less";
 import "./index.less";
 
@@ -124,10 +125,21 @@ import "./index.less";
 
     /**
      * 发布宠物交易
+     * @尹文楷
      * @returns {Promise<void>}
      */
     async publishItemHandler() {
       await dispatch(homeAPI.publishItemRequest.apply(this));
+    },
+
+    /**
+     * 获取宠物发布之后的内容详情
+     * @尹文楷
+     * @param id
+     * @returns {Promise<void>}
+     */
+    async getPetDetailInfoHandler(id) {
+      await dispatch(homeAPI.getPetDetailRequest.apply(this, [id]));
     },
 
     /**
@@ -146,7 +158,7 @@ class Index extends Component {
   };
 
   config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: "首页"
   };
 
   async componentDidMount() {
@@ -205,13 +217,14 @@ class Index extends Component {
             images: [],
             title: null,
             cost: null,
-            formId: null
+            formId: null,
+            contractInfo: null
           }
         }
       });
     }
     await Taro.setNavigationBarTitle({
-      title: "首页"
+      title: prompt["navigationBarTitleText"]["home_page"]["initial"]
     });
   }
 
@@ -227,7 +240,7 @@ class Index extends Component {
       }
     });
     await Taro.setNavigationBarTitle({
-      title: ""
+      title: prompt["navigationBarTitleText"]["home_page"]["publish"]
     });
     await getFormIdHandler.apply(this, [event.target.formId]);
   }
@@ -345,25 +358,18 @@ class Index extends Component {
     const {homeStore} = this.props;
     const {dialogData} = homeStore;
     const {publishData} = dialogData;
-    const {content, images, isLocationAuthorize, title, cost, formId} = publishData;
-    return Tools.addRules(content, [{
+    const {content, images, isLocationAuthorize, title, cost, formId, contractInfo} = publishData;
+    return Tools.addRules([
+      content,
+      images,
+      isLocationAuthorize,
+      title,
+      cost,
+      formId,
+      contractInfo
+    ], [{
       rule: "isEmpty",
-      errMsg: "warning:宠物描述不能为空"
-    }]).addRules(images, [{
-      rule: "isEmpty",
-      errMsg: "warning:图片组不能为空"
-    }]).addRules(isLocationAuthorize, [{
-      rule: "isEmpty",
-      errMsg: "warning:必须获取定位"
-    }]).addRules(title, [{
-      rule: "isEmpty",
-      errMsg: "warning:标题不能为空"
-    }]).addRules(cost, [{
-      rule: "isEmpty",
-      errMsg: "warning:价格不能为空"
-    }]).addRules(formId, [{
-      rule: "isEmpty",
-      errMsg: "warning:模板消息id不能为空"
+      errMsg: prompt["verify"]["home_page"]["isEmpty"]
     }]).execute();
   }
 
@@ -379,12 +385,21 @@ class Index extends Component {
     }
   }
 
+  /**
+   * 获取详情页内容
+   * @尹文楷
+   **/
+  async getPetDetailHandler(id) {
+    const {getPetDetailInfoHandler} = this.props;
+    await getPetDetailInfoHandler.apply(this, [id]);
+  }
+
   render() {
     const {homeStore, changeCurrentHandler} = this.props;
     const {current, petList, loadStatus, dialogShowOrHidden, dialogData} = homeStore;
     const {isPublishOpened} = dialogShowOrHidden;
     const {publishData} = dialogData;
-    const {content, files, area, title, cost, isRefusedModal} = publishData;
+    const {content, files, area, title, cost, isRefusedModal, contractInfo} = publishData;
     return (
       <ScrollView
         scrollY
@@ -393,14 +408,19 @@ class Index extends Component {
         lowerThreshold={86}
         onScrollToLower={this.onScrollToLower}
       >
-        <AtMessage />
+        <AtMessage/>
         {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
         <View className='at-row at-row--wrap pet-business-container'>
           {
             petList && petList.length > 0 && petList.map((petItem) => {
               let id = petItem["id"];
               return <View key={id} className='at-col at-col-6 at-col--wrap'>
-                <AtCard title={null} extra={null} className='pet-business-list'>
+                <AtCard
+                  title={null}
+                  extra={null}
+                  className='pet-business-list'
+                  onClick={this.getPetDetailHandler.bind(this, id)}
+                >
                   <Image mode='aspectFill'
                          src={petItem['cover']}
                          className='pet-business-list-image'
@@ -439,7 +459,7 @@ class Index extends Component {
         />
         {/*宠物交易发布区域*/}
         <AtFloatLayout
-          title='发布'
+          title={prompt["publish"]["home_page"]["title"]}
           isOpened={isPublishOpened}
           onClose={this.onPublishClose}
           className='pet-business-publish'
@@ -452,7 +472,7 @@ class Index extends Component {
                 height={240}
                 value={content}
                 onChange={this.onTextChangeHandler.bind(this, "content")}
-                placeholder='描述一下宝贝转手的原因、入手渠道和使用感受'
+                placeholder={prompt["publish"]["home_page"]["placeholder"]["content"]}
                 className='pet-business-publish-content-description'
               />
               <AtImagePicker
@@ -478,8 +498,8 @@ class Index extends Component {
               <AtInput
                 name='title'
                 type='text'
-                title='标题'
-                placeholder='请输入标题'
+                title={prompt["publish"]["home_page"]["label"]["title"]}
+                placeholder={prompt["publish"]["home_page"]["placeholder"]["title"]}
                 value={title}
                 className='pet-business-publish-content-input pet-business-publish-content-title'
                 onChange={this.onTextChangeHandler.bind(this, "title")}
@@ -487,11 +507,21 @@ class Index extends Component {
               <AtInput
                 name='cost'
                 type='number'
-                title='一口价'
-                placeholder='请输入交易宠物的价格'
+                title={prompt["publish"]["home_page"]["label"]["cost"]}
+                placeholder={prompt["publish"]["home_page"]["placeholder"]["cost"]}
                 value={cost}
                 className='pet-business-publish-content-input pet-business-publish-content-price'
                 onChange={this.onTextChangeHandler.bind(this, "cost")}
+              />
+              <AtInput
+                name='contractInfo'
+                type='text'
+                title={prompt["publish"]["home_page"]["label"]["contractInfo"]}
+                placeholder={prompt["publish"]["home_page"]["placeholder"]["contractInfo"]}
+                value={contractInfo}
+                maxlength={50}
+                className='pet-business-publish-content-input pet-business-publish-content-contractInfo'
+                onChange={this.onTextChangeHandler.bind(this, "contractInfo")}
               />
             </View>
             <View className='pet-business-publish-content-button'>
@@ -501,10 +531,10 @@ class Index extends Component {
             </View>
             <AtModal
               isOpened={isRefusedModal}
-              title='温馨提示'
+              title={prompt["modal"]["home_page"]["publish"]["title"]}
               cancelText='取消'
               confirmText='确定'
-              content='检测到您没打定位权限，是否去设置打开？'
+              content={prompt["modal"]["home_page"]["publish"]["content"]}
               onConfirm={this.getOpenSettingHandler}
               onCancel={this.getModalCancelHandler}
             />
