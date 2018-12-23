@@ -1,7 +1,9 @@
 import homeConstants from "./home";
+import detailConstants from "./detail";
 
 const constants = {
-  homeConstants
+  homeConstants,
+  detailConstants
 };
 
 module.exports = constants;

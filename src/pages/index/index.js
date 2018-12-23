@@ -175,9 +175,22 @@ class Index extends Component {
   }
 
   componentDidShow() {
+    Taro.showShareMenu({
+      withShareTicket: true
+    });
   }
 
   componentDidHide() {
+  }
+
+  /**
+   * 监听用户点击页面内转发按钮或右上角菜单“转发”按钮的行为，并自定义转发内容。
+   * @param from
+   * @param target
+   * @param webViewUrl
+   */
+  onShareAppMessage({from, target, webViewUrl}) {
+
   }
 
   /**
@@ -218,7 +231,7 @@ class Index extends Component {
             title: null,
             cost: null,
             formId: null,
-            contractInfo: null
+            contactInfo: null
           }
         }
       });
@@ -358,7 +371,7 @@ class Index extends Component {
     const {homeStore} = this.props;
     const {dialogData} = homeStore;
     const {publishData} = dialogData;
-    const {content, images, isLocationAuthorize, title, cost, formId, contractInfo} = publishData;
+    const {content, images, isLocationAuthorize, title, cost, formId, contactInfo} = publishData;
     return Tools.addRules([
       content,
       images,
@@ -366,7 +379,7 @@ class Index extends Component {
       title,
       cost,
       formId,
-      contractInfo
+      contactInfo
     ], [{
       rule: "isEmpty",
       errMsg: prompt["verify"]["home_page"]["isEmpty"]
@@ -399,7 +412,7 @@ class Index extends Component {
     const {current, petList, loadStatus, dialogShowOrHidden, dialogData} = homeStore;
     const {isPublishOpened} = dialogShowOrHidden;
     const {publishData} = dialogData;
-    const {content, files, area, title, cost, isRefusedModal, contractInfo} = publishData;
+    const {content, files, area, title, cost, isRefusedModal, contactInfo} = publishData;
     return (
       <ScrollView
         scrollY
@@ -514,14 +527,14 @@ class Index extends Component {
                 onChange={this.onTextChangeHandler.bind(this, "cost")}
               />
               <AtInput
-                name='contractInfo'
+                name='contactInfo'
                 type='text'
-                title={prompt["publish"]["home_page"]["label"]["contractInfo"]}
-                placeholder={prompt["publish"]["home_page"]["placeholder"]["contractInfo"]}
-                value={contractInfo}
+                title={prompt["publish"]["home_page"]["label"]["contactInfo"]}
+                placeholder={prompt["publish"]["home_page"]["placeholder"]["contactInfo"]}
+                value={contactInfo}
                 maxlength={50}
-                className='pet-business-publish-content-input pet-business-publish-content-contractInfo'
-                onChange={this.onTextChangeHandler.bind(this, "contractInfo")}
+                className='pet-business-publish-content-input pet-business-publish-content-contactInfo'
+                onChange={this.onTextChangeHandler.bind(this, "contactInfo")}
               />
             </View>
             <View className='pet-business-publish-content-button'>

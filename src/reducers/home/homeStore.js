@@ -52,7 +52,7 @@ const defaultState = {
       //用于对于发起模板消息的formId
       formId: null,
       //用于卖方的联系方式
-      contractInfo: null
+      contactInfo: null
     }
   }
 };

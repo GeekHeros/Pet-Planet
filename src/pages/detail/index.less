@@ -1,0 +1,102 @@
+page {
+  scroll-view.pet-detail {
+    view.pet-detail-header {
+      & {
+        height: 60px;
+        line-height: 60px;
+      }
+
+      text.pet-detail-header-title {
+        width: calc(100% - 60px);
+        margin-left: 20px;
+        display: inline-block;
+        color: #5c89e4;
+        font-size: 26px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &-icon {
+          position: relative;
+          height: 60px;
+          bottom: 20px;
+          left: 16px;
+        }
+      }
+
+      &-collection {
+        line-height: 60px;
+        text-align: center;
+
+        &-button {
+          font-size: 22px;
+          min-width: 64px;
+          height: 42px;
+          line-height: 39px;
+          margin-top: 10px;
+        }
+      }
+    }
+
+    view.pet-detail-content {
+      width: 100%;
+      padding: 0 24px;
+
+      &-price {
+        font-size: 42px;
+        font-weight: bold;
+        color: #ec544c;
+        margin: 12px 0;
+
+        text.pet-detail-content-price-symbol {
+          font-size: 34px;
+          margin-right: 4px;
+        }
+      }
+
+      &-info {
+        font-size: 28px;
+      }
+    }
+
+    view.pet-detail-images {
+      width: 100%;
+      line-height: 0;
+      margin-top: 24px;
+
+      image.pet-detail-image-item {
+        width: 100%;
+        height: 820px;
+      }
+    }
+
+    view.pet-detail-position {
+      padding: 0 16px;
+      margin: 16px 0;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 42px;
+      line-height: 38px;
+
+      &-area {
+        font-size: 22px;
+        color: #999;
+
+        text.pet-detail-position-area-icon {
+          margin-right: 6px;
+        }
+      }
+
+      &-share {
+        &-button {
+          border: none;
+          height: 42px;
+          line-height: 38px;
+          text-align: right;
+          margin-top: 4px;
+        }
+      }
+    }
+  }
+}

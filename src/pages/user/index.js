@@ -41,6 +41,22 @@ class User extends Component {
 
   }
 
+  componentDidShow() {
+    Taro.showShareMenu({
+      withShareTicket: true
+    });
+  }
+
+  /**
+   * 监听用户点击页面内转发按钮或右上角菜单“转发”按钮的行为，并自定义转发内容。
+   * @param from
+   * @param target
+   * @param webViewUrl
+   */
+  onShareAppMessage({from, target, webViewUrl}) {
+
+  }
+
   componentWillReceiveProps(nextProps) {
 
   }

@@ -2,6 +2,9 @@ import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
 import {petPlanetPrefix, staticData} from "../utils/static";
 import {getPetList, changeLoadStatus, setAttrValue, changePageNum} from "../actions/home";
+import prompt from "../constants/prompt";
+import {setDetailAttrValue} from "../actions/detail";
+import {pageCurrentList} from "../utils/static";
 
 /**
  * 调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
@@ -302,7 +305,7 @@ function publishItemRequest() {
     const {homeStore} = this.props;
     const {dialogData, cookie} = homeStore;
     const {publishData} = dialogData;
-    const {content, images, area, title, cost, includeVideo, formId, contractInfo} = publishData;
+    const {content, images, area, title, cost, includeVideo, formId, contactInfo} = publishData;
     let cover = images[0];
     const params = {
       content,
@@ -313,7 +316,7 @@ function publishItemRequest() {
       includeVideo,
       formId,
       cover,
-      // contractInfo
+      contactInfo
     };
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyHome/publishItem`,
@@ -337,7 +340,7 @@ function publishItemRequest() {
               title: null,
               cost: null,
               formId: null,
-              contractInfo: null
+              contactInfo: null
             }
           }
         }));
@@ -372,7 +375,24 @@ function getPetDetailRequest(id) {
         "cookie": cookie
       },
       success: async (data, statusCode, header) => {
-        console.log(data);
+        const {title, cost, content, area, contactInfo, includeVideo, wantCount, imgList, collected} = data;
+        await dispatch(setDetailAttrValue({
+          id,
+          title,
+          cost,
+          content,
+          area,
+          contactInfo,
+          images: imgList,
+          includeVideo,
+          collected,
+          collection: collected ? prompt["collection"]["collected"]["text"] : prompt["collection"]["noCollected"]["text"],
+          collectionType: collected ? prompt["collection"]["collected"]["type"] : prompt["collection"]["noCollected"]["type"],
+          wantCount
+        }));
+        await Taro.navigateTo({
+          url: pageCurrentList[2]
+        });
       },
       complete: async (res) => {
 
