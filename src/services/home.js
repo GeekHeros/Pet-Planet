@@ -42,7 +42,7 @@ function getLoginCookie(code, homeInfoHandler) {
       data: {
         code
       },
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         await dispatch(setAttrValue({
           cookie: header["Set-Cookie"]
         }));
@@ -78,7 +78,7 @@ function homeInfoRequest() {
         "cookie": cookie
       },
       data: params,
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         let petList_new = [...petList, ...data.items];
         await dispatch(getPetList({
           petList: petList_new,
@@ -114,7 +114,7 @@ function getFormIdRequest(formId) {
       data: {
         formId
       },
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         await dispatch(setAttrValue({
           dialogData: {
             publishData: {
@@ -326,7 +326,7 @@ function publishItemRequest() {
         "cookie": cookie
       },
       data: params,
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         await dispatch(setAttrValue({
           dialogShowOrHidden: {
             isPublishOpened: false
@@ -374,7 +374,7 @@ function getPetDetailRequest(id) {
         "content-type": "application/json",
         "cookie": cookie
       },
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         const {title, cost, content, area, contactInfo, includeVideo, wantCount, imgList, collected} = data;
         await dispatch(setDetailAttrValue({
           id,

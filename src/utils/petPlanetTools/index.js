@@ -1,10 +1,13 @@
 import Taro from "@tarojs/taro";
+import store from "../../store";
 import multipleToNull from "./multipleToNull";
 import compareAdd from "./compareAdd";
 import requests from "./requests";
 import uploadFile from "./uploadFile";
 import {getSetting, chooseLocation, authorize, openSetting} from "./getSetting";
 import loginCode from "./loginCode";
+import {petPlanetPrefix} from "../static";
+import {setAttrValue} from "../../actions/home";
 
 const PetPlanetTools = (function () {
   //用于表单保存校验的规则
@@ -131,7 +134,7 @@ const PetPlanetTools = (function () {
      * wx请求方法封装
      */
     request(params) {
-      return requests.apply(this.wx, [params]);
+      return requests.apply(this.wx, [params, this]);
     }
 
     /**
@@ -149,6 +152,47 @@ const PetPlanetTools = (function () {
      */
     login(params) {
       return loginCode.apply(this.wx, [params]);
+    }
+
+    /**
+     * 登录,将微信与后台服务器绑定,建立会话
+     * @尹文楷
+     */
+    loginSession(request) {
+      this.login({
+        timeout: 5000,
+        success: async (code) => {
+          // 登录,将微信与后台服务器绑定,建立会话
+          // @尹文楷
+          await this.request({
+            url: `${petPlanetPrefix}/tinySession/login`,
+            method: "GET",
+            header: {
+              "content-type": "application/json"
+            },
+            data: {
+              code
+            },
+            success: async (data, header) => {
+              await store.dispatch(setAttrValue({
+                cookie: header["Set-Cookie"]
+              }));
+              await request();
+            },
+            fail: async (res) => {
+
+            },
+            complete: async (res) => {
+
+            }
+          });
+        },
+        fail: async (res) => {
+
+        },
+        complete: async (res) => {
+        }
+      });
     }
 
     /**
