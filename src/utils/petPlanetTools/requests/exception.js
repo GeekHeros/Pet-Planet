@@ -4,7 +4,7 @@ import Taro from "@tarojs/taro";
  * 异常处理方法函数
  * @尹文楷
  */
-function exception({errMsg, data: {statusCode}, request}) {
+function exception({errMsg, data: {statusCode}, request, params}) {
   switch (statusCode) {
     case 401:
       Taro.showModal({
@@ -13,7 +13,7 @@ function exception({errMsg, data: {statusCode}, request}) {
         showCancel: false,
         confirmColor: "#5c89e4",
         success: async () => {
-          await this.loginSession(request);
+          await this.loginSession(request, params);
         }
       });
       return false;

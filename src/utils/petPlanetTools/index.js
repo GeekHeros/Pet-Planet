@@ -158,7 +158,7 @@ const PetPlanetTools = (function () {
      * 登录,将微信与后台服务器绑定,建立会话
      * @尹文楷
      */
-    loginSession(request) {
+    loginSession(request, params) {
       this.login({
         timeout: 5000,
         success: async (code) => {
@@ -177,7 +177,8 @@ const PetPlanetTools = (function () {
               await store.dispatch(setAttrValue({
                 cookie: header["Set-Cookie"]
               }));
-              await request();
+              params["header"]["cookie"] = header["Set-Cookie"];
+              await request(params);
             },
             fail: async (res) => {
 

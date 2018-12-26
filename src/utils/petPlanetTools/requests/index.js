@@ -22,7 +22,8 @@ function requests({url, method, header, data, success, fail, complete}, Tools) {
       if (exception.apply(Tools, [{
         errMsg: responseData["errmsg"],
         data: {responseData, statusCode, responseHeader},
-        request: this.request.bind(this, {url, method, header, data, success, fail, complete}, Tools)
+        request: Tools.request.bind(Tools),
+        params: {url, method, header, data, success, fail, complete}
       }])) {
         success(responseData, responseHeader);
       }
