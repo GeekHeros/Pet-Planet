@@ -176,61 +176,63 @@ class Index extends Component {
     const {homeStore, changeCurrentHandler} = this.props;
     const {current, petList, loadStatus} = homeStore;
     return (
-      <ScrollView
-        scrollY
-        className='pet-business'
-        scrollTop={0}
-        lowerThreshold={86}
-        onScrollToLower={this.onScrollToLower}
-      >
-        {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
-        <View className='at-row at-row--wrap pet-business-container'>
-          {
-            petList && petList.length > 0 && petList.map((petItem) => {
-              let id = petItem["id"];
-              return <View key={id} className='at-col at-col-6 at-col--wrap'>
-                <AtCard
-                  title={null}
-                  extra={null}
-                  className='pet-business-list'
-                  onClick={this.getPetDetailHandler.bind(this, id)}
-                >
-                  <Image mode='aspectFill'
-                         src={petItem['cover']}
-                         className='pet-business-list-image'
-                  />
-                  <View className='pet-business-list-title'>{petItem['title']}</View>
-                  <View className='pet-business-list-price'>
-                    <text class='pet-business-list-price-symbol'>
-                      &#165;
-                    </text>
-                    {petItem['cost']}
-                    <text class='pet-business-list-price-like'>
-                      {petItem['wantCount']}人想要
-                    </text>
-                  </View>
-                  <View className='pet-business-list-username'>
-                    {petItem['userId']}
-                  </View>
-                  <View className='pet-business-list-address'>
-                    <AtIcon prefixClass='iconfont'
-                            value='petPlanet-gps'
-                            className='pet-business-list-address-icon'
-                            size={12} color='#ec544c'
+      <View className='pet'>
+        <ScrollView
+          scrollY
+          className='pet-business'
+          scrollTop={0}
+          lowerThreshold={86}
+          onScrollToLower={this.onScrollToLower}
+        >
+          {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
+          <View className='at-row at-row--wrap pet-business-container'>
+            {
+              petList && petList.length > 0 && petList.map((petItem) => {
+                let id = petItem["id"];
+                return <View key={id} className='at-col at-col-6 at-col--wrap'>
+                  <AtCard
+                    title={null}
+                    extra={null}
+                    className='pet-business-list'
+                    onClick={this.getPetDetailHandler.bind(this, id)}
+                  >
+                    <Image mode='aspectFill'
+                           src={petItem['cover']}
+                           className='pet-business-list-image'
                     />
-                    {petItem['area']}
-                  </View>
-                </AtCard>
-              </View>
-            })
-          }
-        </View>
-        {/*上拉加载更多区域*/}
-        <AtLoadMore
-          status={loadStatus}
-          moreText=''
-          className='pet-business-load-more'
-        />
+                    <View className='pet-business-list-title'>{petItem['title']}</View>
+                    <View className='pet-business-list-price'>
+                      <text class='pet-business-list-price-symbol'>
+                        &#165;
+                      </text>
+                      {petItem['cost']}
+                      <text class='pet-business-list-price-like'>
+                        {petItem['wantCount']}人想要
+                      </text>
+                    </View>
+                    <View className='pet-business-list-username'>
+                      {petItem['userId']}
+                    </View>
+                    <View className='pet-business-list-address'>
+                      <AtIcon prefixClass='iconfont'
+                              value='petPlanet-gps'
+                              className='pet-business-list-address-icon'
+                              size={12} color='#ec544c'
+                      />
+                      {petItem['area']}
+                    </View>
+                  </AtCard>
+                </View>
+              })
+            }
+          </View>
+          {/*上拉加载更多区域*/}
+          <AtLoadMore
+            status={loadStatus}
+            moreText=''
+            className='pet-business-load-more'
+          />
+        </ScrollView>
         {/*按钮发布区域: 使用formId进行发起一次有formId的模板消息请求*/}
         <AtForm reportSubmit={true}
                 style='border:none'
@@ -253,7 +255,7 @@ class Index extends Component {
           tabList={tabBarTabList}
           onClick={changeCurrentHandler}
         />
-      </ScrollView>
+      </View>
     )
   }
 }
