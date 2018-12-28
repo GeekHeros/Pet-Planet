@@ -5,7 +5,7 @@
  */
 const prompt = {
   verify: {
-    home_page: {
+    publish_page: {
       isEmpty: [
         "warning:宠物描述不能为空",
         "warning:图片组不能为空",
@@ -27,7 +27,7 @@ const prompt = {
     }
   },
   publish: {
-    home_page: {
+    publish_page: {
       title: "发布",
       placeholder: {
         content: "描述一下宝贝转手的原因、入手渠道和使用感受",
@@ -43,7 +43,7 @@ const prompt = {
     }
   },
   modal: {
-    home_page: {
+    publish_page: {
       publish: {
         title: "温馨提示",
         content: "检测到您没打定位权限，是否去设置打开？"

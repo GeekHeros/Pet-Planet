@@ -6,22 +6,12 @@ import {
   AtButton,
   AtIcon,
   AtCard,
-  AtLoadMore,
-  AtFloatLayout,
-  AtTextarea,
-  AtImagePicker,
-  AtList,
-  AtListItem,
-  AtInput,
-  AtModal,
-  AtMessage
+  AtLoadMore
 } from 'taro-ui';
 import {connect} from "@tarojs/redux";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
 import {homeAPI} from "../../services";
 import {tabBarTabList, pageCurrentList, staticData} from "../../utils/static";
-import Tools from "../../utils/petPlanetTools";
-import prompt from "../../constants/prompt";
 import "./iconfont/iconfont.less";
 import "./index.less";
 
@@ -68,15 +58,6 @@ import "./index.less";
     },
 
     /**
-     * 改变图片选择器的内容并上传图片
-     * @尹文楷
-     * @returns {Promise<void>}
-     */
-    async publishImageUploadHandler() {
-      await dispatch(homeAPI.publishImageUploadRequest.apply(this));
-    },
-
-    /**
      * formId收集
      * @尹文楷
      * @params formId
@@ -87,15 +68,6 @@ import "./index.less";
     },
 
     /**
-     * 获取用户授权设置
-     * @尹文楷
-     * @returns {Promise<void>}
-     */
-    async getSettingHandler() {
-      await dispatch(homeAPI.getSettingRequest.apply(this));
-    },
-
-    /**
      * 改变滚动加载的AtLoadMore的状态
      * @尹文楷
      */
@@ -103,33 +75,6 @@ import "./index.less";
       await dispatch(changeLoadStatus({
         loadStatus
       }));
-    },
-
-    /**
-     * 向用户发起授权请求
-     * @尹文楷
-     * @returns {Promise<void>}
-     */
-    async authorizeHandler(scope) {
-      await dispatch(homeAPI.authorizeRequest.apply(this, [scope]));
-    },
-
-    /**
-     * 调起客户端小程序设置界面，返回用户设置的操作结果
-     * @尹文楷
-     * @returns {Promise<void>}
-     */
-    async openSettingHandler() {
-      await dispatch(homeAPI.openSettingRequest.apply(this));
-    },
-
-    /**
-     * 发布宠物交易
-     * @尹文楷
-     * @returns {Promise<void>}
-     */
-    async publishItemHandler() {
-      await dispatch(homeAPI.publishItemRequest.apply(this));
     },
 
     /**
@@ -210,192 +155,12 @@ class Index extends Component {
   }
 
   /**
-   * 点击发布的取消按钮,关闭发布页面
-   * @returns {Promise<void>}
-   */
-  async onPublishClose() {
-    const {setAttrValueHandler, homeStore} = this.props;
-    const {dialogShowOrHidden} = homeStore;
-    const {isPublishOpened} = dialogShowOrHidden;
-    if (isPublishOpened) {
-      await setAttrValueHandler({
-        dialogShowOrHidden: {
-          isPublishOpened: false
-        },
-        dialogData: {
-          publishData: {
-            content: null,
-            files: [],
-            uploadFilterFiles: [],
-            images: [],
-            title: null,
-            cost: null,
-            formId: null,
-            contactInfo: null
-          }
-        }
-      });
-    }
-    await Taro.setNavigationBarTitle({
-      title: prompt["navigationBarTitleText"]["home_page"]["initial"]
-    });
-  }
-
-  /**
    * 点击发起宠物交易的Submit事件
    * @尹文楷
    */
   async onSubmitHandler(event) {
-    const {setAttrValueHandler, getFormIdHandler} = this.props;
-    await setAttrValueHandler({
-      dialogShowOrHidden: {
-        isPublishOpened: true
-      }
-    });
-    await Taro.setNavigationBarTitle({
-      title: prompt["navigationBarTitleText"]["home_page"]["publish"]
-    });
+    const {getFormIdHandler} = this.props;
     await getFormIdHandler.apply(this, [event.target.formId]);
-  }
-
-  /**
-   * 调起客户端小程序设置界面，返回用户设置的操作结果
-   * @尹文楷
-   * @returns {Promise<void>}
-   */
-  async getOpenSettingHandler() {
-    const {openSettingHandler} = this.props;
-    await openSettingHandler.apply(this);
-  }
-
-  /**
-   * 调起客户端小程序设置界面，返回用户设置的操作结果，点击取消触发的动作
-   * @returns {Promise<void>}
-   */
-  async getModalCancelHandler() {
-    const {setAttrValueHandler} = this.props;
-    await setAttrValueHandler({
-      dialogData: {
-        publishData: {
-          isRefusedModal: false
-        }
-      }
-    });
-  }
-
-  /**
-   * 改变输入框的内容
-   * @尹文楷
-   * @returns {Promise<void>}
-   */
-  async onTextChangeHandler(key, event) {
-    const {setAttrValueHandler} = this.props;
-    let value;
-    value = Object.prototype.toString.call(event) === "[object Object]" ? event.target.value : event;
-    await setAttrValueHandler({
-      dialogData: {
-        publishData: {
-          [key]: value
-        }
-      }
-    });
-  }
-
-  /**
-   * 改变图片选择器的内容并上传图片
-   * @尹文楷
-   * @returns {Promise<void>}
-   */
-  async onImageChangeHandler(files, operationType, index) {
-    const {setAttrValueHandler, publishImageUploadHandler, homeStore} = this.props;
-    const {dialogData} = homeStore;
-    const {publishData} = dialogData;
-    const {files: fileList, images} = publishData;
-    let uploadFilterFiles = [];
-    switch (operationType) {
-      case "add":
-        for (let [key, value] of files.entries()) {
-          let flag = false;
-          for (let [_key, _value] of fileList.entries()) {
-            if (value["url"] === _value["url"]) {
-              flag = true;
-            }
-          }
-          if (!flag) {
-            uploadFilterFiles = [...uploadFilterFiles, value];
-          }
-        }
-        await setAttrValueHandler({
-          dialogData: {
-            publishData: {
-              uploadFilterFiles
-            }
-          }
-        });
-        await publishImageUploadHandler.apply(this);
-        break;
-      case "remove":
-        await images.splice(index, 1);
-        await setAttrValueHandler({
-          dialogData: {
-            publishData: {
-              files,
-              images
-            }
-          }
-        });
-        break;
-      default:
-        break;
-    }
-  }
-
-  /**
-   * 向用户发起授权请求
-   * @尹文楷
-   **/
-  async getAuthorizeHandler(e) {
-    const {getSettingHandler, authorizeHandler} = this.props;
-    await getSettingHandler();
-    await authorizeHandler.apply(this, ["scope.userLocation"]);
-    //取消冒泡事件
-    e.stopPropagation();
-  }
-
-  /**
-   * 用于表单校验的规则函数
-   * @尹文楷
-   * @returns {Promise<void>}
-   */
-  verify() {
-    const {homeStore} = this.props;
-    const {dialogData} = homeStore;
-    const {publishData} = dialogData;
-    const {content, images, isLocationAuthorize, title, cost, formId, contactInfo} = publishData;
-    return Tools.addRules([
-      content,
-      images,
-      isLocationAuthorize,
-      title,
-      cost,
-      formId,
-      contactInfo
-    ], [{
-      rule: "isEmpty",
-      errMsg: prompt["verify"]["home_page"]["isEmpty"]
-    }]).execute();
-  }
-
-  /**
-   * 发布宠物交易
-   * @尹文楷
-   **/
-  async onPublishHandler() {
-    const {publishItemHandler} = this.props;
-    const {verify} = this;
-    if (verify.apply(this)) {
-      await publishItemHandler.apply(this);
-    }
   }
 
   /**
@@ -409,10 +174,7 @@ class Index extends Component {
 
   render() {
     const {homeStore, changeCurrentHandler} = this.props;
-    const {current, petList, loadStatus, dialogShowOrHidden, dialogData} = homeStore;
-    const {isPublishOpened} = dialogShowOrHidden;
-    const {publishData} = dialogData;
-    const {content, files, area, title, cost, isRefusedModal, contactInfo} = publishData;
+    const {current, petList, loadStatus} = homeStore;
     return (
       <ScrollView
         scrollY
@@ -421,7 +183,6 @@ class Index extends Component {
         lowerThreshold={86}
         onScrollToLower={this.onScrollToLower}
       >
-        <AtMessage/>
         {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
         <View className='at-row at-row--wrap pet-business-container'>
           {
@@ -470,89 +231,6 @@ class Index extends Component {
           moreText=''
           className='pet-business-load-more'
         />
-        {/*宠物交易发布区域*/}
-        <AtFloatLayout
-          title={prompt["publish"]["home_page"]["title"]}
-          isOpened={isPublishOpened}
-          onClose={this.onPublishClose}
-          className='pet-business-publish'
-        >
-          <View className='pet-business-publish-content'>
-            <View className='pet-business-publish-content-top'>
-              <AtTextarea
-                count={false}
-                textOverflowForbidden={false}
-                height={240}
-                value={content}
-                onChange={this.onTextChangeHandler.bind(this, "content")}
-                placeholder={prompt["publish"]["home_page"]["placeholder"]["content"]}
-                className='pet-business-publish-content-description'
-              />
-              <AtImagePicker
-                mode='aspectFill'
-                length={4}
-                multiple
-                className='pet-business-publish-content-images'
-                files={files}
-                showAddBtn
-                onChange={this.onImageChangeHandler}
-              />
-              <AtList className='pet-business-publish-content-position'
-                      hasBorder={false}
-              >
-                <AtListItem iconInfo={{prefixClass: 'iconfont', value: 'petPlanet-gps', size: 20, color: '#000'}}
-                            hasBorder={false}
-                            title={area}
-                            onClick={this.getAuthorizeHandler}
-                />
-              </AtList>
-            </View>
-            <View className='pet-business-publish-content-bottom'>
-              <AtInput
-                name='title'
-                type='text'
-                title={prompt["publish"]["home_page"]["label"]["title"]}
-                placeholder={prompt["publish"]["home_page"]["placeholder"]["title"]}
-                value={title}
-                className='pet-business-publish-content-input pet-business-publish-content-title'
-                onChange={this.onTextChangeHandler.bind(this, "title")}
-              />
-              <AtInput
-                name='cost'
-                type='number'
-                title={prompt["publish"]["home_page"]["label"]["cost"]}
-                placeholder={prompt["publish"]["home_page"]["placeholder"]["cost"]}
-                value={cost}
-                className='pet-business-publish-content-input pet-business-publish-content-price'
-                onChange={this.onTextChangeHandler.bind(this, "cost")}
-              />
-              <AtInput
-                name='contactInfo'
-                type='text'
-                title={prompt["publish"]["home_page"]["label"]["contactInfo"]}
-                placeholder={prompt["publish"]["home_page"]["placeholder"]["contactInfo"]}
-                value={contactInfo}
-                maxlength={50}
-                className='pet-business-publish-content-input pet-business-publish-content-contactInfo'
-                onChange={this.onTextChangeHandler.bind(this, "contactInfo")}
-              />
-            </View>
-            <View className='pet-business-publish-content-button'>
-              <AtButton type='primary' onClick={this.onPublishHandler}>
-                确定发布
-              </AtButton>
-            </View>
-            <AtModal
-              isOpened={isRefusedModal}
-              title={prompt["modal"]["home_page"]["publish"]["title"]}
-              cancelText='取消'
-              confirmText='确定'
-              content={prompt["modal"]["home_page"]["publish"]["content"]}
-              onConfirm={this.getOpenSettingHandler}
-              onCancel={this.getModalCancelHandler}
-            />
-          </View>
-        </AtFloatLayout>
         {/*按钮发布区域: 使用formId进行发起一次有formId的模板消息请求*/}
         <AtForm reportSubmit={true}
                 style='border:none'

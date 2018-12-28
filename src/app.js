@@ -4,6 +4,8 @@ import {Provider} from '@tarojs/redux';
 
 import Index from './pages/index';
 import User from './pages/user';
+import Publish from './pages/publish';
+import Detail from './pages/detail';
 
 import store from './store';
 
@@ -18,6 +20,7 @@ class App extends Component {
     pages: [
       'pages/index/index',
       'pages/user/index',
+      'pages/publish/index',
       'pages/detail/index'
     ],
     window: {
@@ -50,6 +53,8 @@ class App extends Component {
       <Provider store={store}>
         <Index />
         <User />
+        <Publish />
+        <Detail />
       </Provider>
     )
   }

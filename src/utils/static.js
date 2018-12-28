@@ -38,7 +38,8 @@ const tabBarTabList = [{
 const pageCurrentList = [
   "/pages/index/index",
   "/pages/user/index",
-  "/pages/detail/index"
+  "/pages/detail/index",
+  "/pages/publish/index"
 ];
 
 const staticConfig = {
