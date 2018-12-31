@@ -1,0 +1,100 @@
+scroll-view.pet-business {
+  & {
+    position: relative;
+    z-index: 1;
+    height: calc(100% - 120px);
+  }
+
+  view.pet-business-list {
+    & {
+      margin: 0 9px 14px;
+    }
+
+    view.at-card-header {
+      padding: 0;
+      border: none;
+
+      text.at-card-header__title {
+        display: none;
+      }
+    }
+
+    .at-card-content {
+      padding: 0 0 24px;
+    }
+
+    &-title,
+    &-price,
+    &-username,
+    &-address {
+      padding: 0 16px;
+    }
+
+    &-title,
+    &-price {
+      height: 48px;
+    }
+
+    &-title {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 32px;
+    }
+
+    &-price {
+      font-size: 38px;
+      font-weight: bold;
+      color: #ec544c;
+
+      text.pet-business-list-price-symbol {
+        font-size: 26px;
+        margin-right: 4px;
+      }
+
+      text.pet-business-list-price-like {
+        font-size: 22px;
+        color: #bdbdbd;
+        float: right;
+        height: 100%;
+        line-height: 48px;
+      }
+    }
+
+    &-username {
+      color: #999;
+      margin-top: 16px;
+      font-size: 26px;
+    }
+
+    &-address {
+      margin-top: 2px;
+      font-size: 22px;
+      color: #999;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+
+      text.pet-business-list-address-icon {
+        margin-right: 6px;
+      }
+    }
+  }
+
+
+  image.pet-business-list-image {
+    width: 357px;
+    height: 357px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+  }
+
+  view.pet-business-load-more {
+    height: 72px;
+    margin-bottom: 45px;
+
+    .at-button {
+      border: none;
+    }
+  }
+}

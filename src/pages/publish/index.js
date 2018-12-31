@@ -229,7 +229,7 @@ class Publish extends Taro.Component {
         scrollY={true}
         scrollTop={0}
       >
-        <AtMessage/>
+        <AtMessage />
         <View className='pet-business-publish'>
           <View className='pet-business-publish-content'>
             <View className='pet-business-publish-content-top'>
@@ -251,13 +251,15 @@ class Publish extends Taro.Component {
                 showAddBtn
                 onChange={this.onImageChangeHandler}
               />
-              <AtList className='pet-business-publish-content-position'
-                      hasBorder={false}
+              <AtList
+                className='pet-business-publish-content-position'
+                hasBorder={false}
               >
-                <AtListItem iconInfo={{prefixClass: 'iconfont', value: 'petPlanet-gps', size: 20, color: '#000'}}
-                            hasBorder={false}
-                            title={area}
-                            onClick={this.getAuthorizeHandler}
+                <AtListItem
+                  iconInfo={{prefixClass: 'iconfont', value: 'petPlanet-gps', size: 20, color: '#000'}}
+                  hasBorder={false}
+                  title={area}
+                  onClick={this.getAuthorizeHandler}
                 />
               </AtList>
             </View>

@@ -1,19 +1,19 @@
 import Taro, {Component} from '@tarojs/taro';
-import {View, Image, ScrollView} from "@tarojs/components";
+import {connect} from "@tarojs/redux";
+import {View} from "@tarojs/components";
 import {
   AtTabBar,
   AtForm,
   AtButton,
-  AtIcon,
-  AtCard,
-  AtLoadMore
+  AtIcon
 } from 'taro-ui';
-import {connect} from "@tarojs/redux";
+import CardView from "../../components/bussiness-components/CardView";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
 import {homeAPI} from "../../services";
 import {tabBarTabList, pageCurrentList, staticData} from "../../utils/static";
 import "./iconfont/iconfont.less";
 import "./index.less";
+import "./card-view.less";
 
 
 @connect((state) => {
@@ -177,69 +177,25 @@ class Index extends Component {
     const {current, petList, loadStatus} = homeStore;
     return (
       <View className='pet'>
-        <ScrollView
-          scrollY
-          className='pet-business'
-          scrollTop={0}
-          lowerThreshold={86}
+        <CardView
+          list={petList}
           onScrollToLower={this.onScrollToLower}
-        >
-          {/*首页列表区域:卖家想要交易售卖的宠物列表*/}
-          <View className='at-row at-row--wrap pet-business-container'>
-            {
-              petList && petList.length > 0 && petList.map((petItem) => {
-                let id = petItem["id"];
-                return <View key={id} className='at-col at-col-6 at-col--wrap'>
-                  <AtCard
-                    title={null}
-                    extra={null}
-                    className='pet-business-list'
-                    onClick={this.getPetDetailHandler.bind(this, id)}
-                  >
-                    <Image mode='aspectFill'
-                           src={petItem['cover']}
-                           className='pet-business-list-image'
-                    />
-                    <View className='pet-business-list-title'>{petItem['title']}</View>
-                    <View className='pet-business-list-price'>
-                      <text class='pet-business-list-price-symbol'>
-                        &#165;
-                      </text>
-                      {petItem['cost']}
-                      <text class='pet-business-list-price-like'>
-                        {petItem['wantCount']}人想要
-                      </text>
-                    </View>
-                    <View className='pet-business-list-username'>
-                      {petItem['userId']}
-                    </View>
-                    <View className='pet-business-list-address'>
-                      <AtIcon prefixClass='iconfont'
-                              value='petPlanet-gps'
-                              className='pet-business-list-address-icon'
-                              size={12} color='#ec544c'
-                      />
-                      {petItem['area']}
-                    </View>
-                  </AtCard>
-                </View>
-              })
-            }
-          </View>
-          {/*上拉加载更多区域*/}
-          <AtLoadMore
-            status={loadStatus}
-            moreText=''
-            className='pet-business-load-more'
-          />
-        </ScrollView>
+          onClick={this.getPetDetailHandler.bind(this)}
+          loadStatus={loadStatus}
+        />
         {/*按钮发布区域: 使用formId进行发起一次有formId的模板消息请求*/}
-        <AtForm reportSubmit={true}
-                style='border:none'
-                onSubmit={this.onSubmitHandler}
-                className='pet-business-deal'
+        <AtForm
+          reportSubmit={true}
+          style='border:none'
+          onSubmit={this.onSubmitHandler}
+          className='pet-business-deal'
         >
-          <AtButton size='small' type='primary' className='pet-business-deal-add' formType='submit'>
+          <AtButton
+            size='small'
+            type='primary'
+            className='pet-business-deal-add'
+            formType='submit'
+          >
             <AtIcon
               value='add'
               className='pet-business-deal-add-icon'

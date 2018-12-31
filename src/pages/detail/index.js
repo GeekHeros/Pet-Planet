@@ -108,10 +108,11 @@ class Detail extends Component {
       >
         <View className='at-row at-row--no-wrap pet-detail-header'>
           <View className='at-col at-col-4 at-col--wrap'>
-            <AtIcon prefixClass='iconfont'
-                    value='petPlanet-planet' size={14}
-                    className='pet-detail-header-title-icon'
-                    color='#5c89e4'
+            <AtIcon
+              prefixClass='iconfont'
+              value='petPlanet-planet' size={14}
+              className='pet-detail-header-title-icon'
+              color='#5c89e4'
             />
             <Text className='pet-detail-header-title'>
               {title}
@@ -155,10 +156,12 @@ class Detail extends Component {
         </View>
         <View className='at-row at-row--no-wrap pet-detail-position'>
           <View className='at-col at-col-5 pet-detail-position-area'>
-            <AtIcon prefixClass='iconfont'
-                    value='petPlanet-gps'
-                    className='pet-detail-position-area-icon'
-                    size={14} color='#ec544c'
+            <AtIcon
+              prefixClass='iconfont'
+              value='petPlanet-gps'
+              className='pet-detail-position-area-icon'
+              size={14}
+              color='#ec544c'
             />
             {area}
           </View>
