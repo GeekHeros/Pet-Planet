@@ -148,7 +148,7 @@ function authorizeRequest(scope) {
 function publishItemRequest() {
   return async (dispatch) => {
     const {publishStore} = this.props;
-    const {content, images, area, title, cost, includeVideo, formId, contactInfo, cookie} = publishStore;
+    const {content, images, area, title, cost, includeVideo, formId, contactInfo} = publishStore;
     let cover = images[0];
     const params = {
       content,
@@ -166,7 +166,7 @@ function publishItemRequest() {
       method: "POST",
       header: {
         "content-type": "application/json",
-        "cookie": cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: params,
       success: async (data, header) => {

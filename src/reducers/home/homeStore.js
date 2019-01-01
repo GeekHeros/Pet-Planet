@@ -16,10 +16,7 @@ const defaultState = {
   currentPetList: [],
   //组件状态，more 状态显示查看更多按钮，loading 状态显示加载状态，noMore 显示无更多数据
   //@尹文楷
-  loadStatus: 'more',
-  //用于登录,将微信与后台服务器绑定,建立会话
-  //@尹文楷
-  cookie: null
+  loadStatus: 'more'
 };
 
 /**

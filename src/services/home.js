@@ -1,7 +1,7 @@
 import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
 import {petPlanetPrefix, staticData, pageCurrentList} from "../utils/static";
-import {getPetList, changeLoadStatus, setAttrValue} from "../actions/home";
+import {getPetList, changeLoadStatus} from "../actions/home";
 import {setPublishAttrValue} from "../actions/publish";
 import prompt from "../constants/prompt";
 import {setDetailAttrValue} from "../actions/detail";
@@ -43,9 +43,7 @@ function getLoginCookie(code, homeInfoHandler) {
         code
       },
       success: async (data, header) => {
-        await dispatch(setAttrValue({
-          cookie: header["Set-Cookie"]
-        }));
+        await Taro.setStorageSync("petPlanet", header["Set-Cookie"]);
         await homeInfoHandler.apply(this, [1]);
       },
       fail: async (res) => {
@@ -65,7 +63,7 @@ function getLoginCookie(code, homeInfoHandler) {
 function homeInfoRequest() {
   return async (dispatch) => {
     const {homeStore} = this.props;
-    const {pageSize, pageNum, petList, cookie} = homeStore;
+    const {pageSize, pageNum, petList} = homeStore;
     const params = {
       pageSize,
       pageNum
@@ -75,7 +73,7 @@ function homeInfoRequest() {
       method: "GET",
       header: {
         "content-type": "application/x-www-form-urlencoded",
-        "cookie": cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: params,
       success: async (data, header) => {
@@ -103,14 +101,12 @@ function homeInfoRequest() {
  */
 function getFormIdRequest(formId) {
   return async (dispatch) => {
-    const {homeStore} = this.props;
-    const {cookie} = homeStore;
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyHome/formId`,
       method: "POST",
       header: {
         "content-type": "application/json",
-        "cookie": cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: {
         formId
@@ -124,7 +120,6 @@ function getFormIdRequest(formId) {
           title: null,
           cost: null,
           formId,
-          cookie,
           contactInfo: null
         }));
         await Taro.navigateTo({
@@ -144,14 +139,12 @@ function getFormIdRequest(formId) {
  */
 function getPetDetailRequest(id) {
   return async (dispatch) => {
-    const {homeStore} = this.props;
-    const {cookie} = homeStore;
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyComms/${id}`,
       method: "GET",
       header: {
         "content-type": "application/json",
-        "cookie": cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       success: async (data, header) => {
         const {title, cost, content, area, contactInfo, includeVideo, wantCount, imgList, collected} = data;

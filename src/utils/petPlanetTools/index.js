@@ -177,19 +177,7 @@ const PetPlanetTools = (function () {
               code
             },
             success: async (data, header) => {
-              let cookie = header["Set-Cookie"];
-              await store.dispatch(setAttrValue({
-                cookie
-              }));
-              await store.dispatch(setPublishAttrValue({
-                cookie
-              }));
-              await store.dispatch(setCollectionAttrValue({
-                cookie
-              }));
-              await store.dispatch(setPublishMineAttrValue({
-                cookie
-              }));
+              await Taro.setStorageSync("petPlanet", header["Set-Cookie"]);
               params["header"]["cookie"] = header["Set-Cookie"];
               await request(params);
             },
