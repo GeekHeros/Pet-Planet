@@ -3,30 +3,26 @@ page {
     view.pet-detail-header {
       & {
         height: 60px;
-        line-height: 60px;
       }
 
-      text.pet-detail-header-title {
-        width: calc(100% - 60px);
-        margin-left: 20px;
-        display: inline-block;
-        color: #5c89e4;
-        font-size: 26px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
+      &-container {
+        & {
+          margin-left: 2.33333%;
+        }
 
-        &-icon {
-          position: relative;
-          height: 60px;
-          bottom: 20px;
-          left: 16px;
+        text.pet-detail-header-title {
+          color: #5c89e4;
+          font-size: 26px;
+          margin-left: 8px;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          overflow: hidden;
         }
       }
 
       &-collection {
         line-height: 60px;
-        text-align: center;
+        text-align: right;
 
         &-button {
           font-size: 22px;

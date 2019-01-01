@@ -107,7 +107,7 @@ class Detail extends Component {
         scrollTop={0}
       >
         <View className='at-row at-row--no-wrap pet-detail-header'>
-          <View className='at-col at-col-4 at-col--wrap'>
+          <View className='at-col at-col-4 at-col__offset-1 at-col--wrap pet-detail-header-container'>
             <AtIcon
               prefixClass='iconfont'
               value='petPlanet-planet' size={14}
@@ -118,7 +118,7 @@ class Detail extends Component {
               {title}
             </Text>
           </View>
-          <View className='at-col at-col-5'>
+          <View className='at-col at-col-4'>
 
           </View>
           <View className='at-col at-col-3 pet-detail-header-collection'>
@@ -175,7 +175,7 @@ class Detail extends Component {
               type='secondary'
               className='pet-detail-position-share-button'
             >
-              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4' />
+              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4'/>
             </AtButton>
           </View>
         </View>
