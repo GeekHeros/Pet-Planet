@@ -1,3 +1,4 @@
+import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
 import {staticData, petPlanetPrefix} from "../utils/static";
 import {setPublishMineAttrValue} from "../actions/publishMine";
@@ -10,13 +11,13 @@ import {setPublishMineAttrValue} from "../actions/publishMine";
 function usersPublishMineRequest() {
   return async (dispatch) => {
     const {publishMineStore} = this.props;
-    const {pageNum, pageSize, cookie, petPublishMineList} = publishMineStore;
+    const {pageNum, pageSize, petPublishMineList} = publishMineStore;
     return Tools.request({
       url: `${petPlanetPrefix}/users/publication`,
       method: "GET",
       header: {
         "content-type": "application/json",
-        "cookie": cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: {
         pageNum,

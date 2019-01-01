@@ -1,3 +1,4 @@
+import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
 import {staticData, petPlanetPrefix} from "../utils/static";
 import {setCollectionAttrValue} from "../actions/collection";
@@ -10,13 +11,13 @@ import {setCollectionAttrValue} from "../actions/collection";
 function usersCollectionRequest() {
   return async (dispatch) => {
     const {collectionStore} = this.props;
-    const {pageNum, pageSize, cookie, petCollectionList} = collectionStore;
+    const {pageNum, pageSize, petCollectionList} = collectionStore;
     return Tools.request({
       url: `${petPlanetPrefix}/users/collection`,
       method: "GET",
       header: {
         "content-type": "application/json",
-        "cookie": cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: {
         pageNum,

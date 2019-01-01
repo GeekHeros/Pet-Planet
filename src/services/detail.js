@@ -1,3 +1,4 @@
+import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
 import {petPlanetPrefix} from "../utils/static";
 import prompt from "../constants/prompt";
@@ -9,15 +10,14 @@ import {setDetailAttrValue} from "../actions/detail";
  */
 function setCollectionRequest() {
   return async (dispatch) => {
-    const {homeStore, detailStore} = this.props;
-    const {cookie} = homeStore;
+    const {detailStore} = this.props;
     const {id} = detailStore;
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyComms/${id}/collect`,
       method: "POST",
       header: {
         "content-type": "application/json",
-        cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: {},
       success: async (data, header) => {
@@ -40,15 +40,14 @@ function setCollectionRequest() {
  */
 function setNoCollectionRequest() {
   return async (dispatch) => {
-    const {homeStore, detailStore} = this.props;
-    const {cookie} = homeStore;
+    const {detailStore} = this.props;
     const {id} = detailStore;
     return await Tools.request({
       url: `${petPlanetPrefix}/tinyComms/${id}/dispel`,
       method: "DELETE",
       header: {
         "content-type": "application/json",
-        cookie
+        "cookie": Taro.getStorageSync("petPlanet")
       },
       data: {},
       success: async (data, header) => {

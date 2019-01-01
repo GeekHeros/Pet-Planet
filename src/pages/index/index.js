@@ -107,8 +107,8 @@ class Index extends Component {
   };
 
   async componentDidMount() {
-    const {homeStore, homeInfoHandler, changeLoadStatusHandler, getLoginSessionHandler} = this.props;
-    const {cookie} = homeStore;
+    const {homeInfoHandler, changeLoadStatusHandler, getLoginSessionHandler} = this.props;
+    const cookie = Taro.getStorageSync("petPlanet");
     if (!cookie) {
       await getLoginSessionHandler.apply(this, [homeInfoHandler]);
     } else {

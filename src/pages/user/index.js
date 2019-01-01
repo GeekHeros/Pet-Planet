@@ -36,16 +36,13 @@ import "./user.less";
      * @尹文楷
      */
     async usersCollectionHandler(pageNum) {
-      const {homeStore} = this.props;
-      const {cookie} = homeStore;
       if (pageNum === 1) {
         await dispatch(setCollectionAttrValue({
           petCollectionList: []
         }));
       }
       await dispatch(setCollectionAttrValue({
-        pageNum,
-        cookie
+        pageNum
       }));
       await Taro.navigateTo({
         url: pageCurrentList[4]
@@ -59,16 +56,13 @@ import "./user.less";
      * @尹文楷
      */
     async usersPublishMineHandler(pageNum) {
-      const {homeStore} = this.props;
-      const {cookie} = homeStore;
       if (pageNum === 1) {
         await dispatch(setPublishMineAttrValue({
           petPublishMineList: []
         }));
       }
       await dispatch(setPublishMineAttrValue({
-        pageNum,
-        cookie
+        pageNum
       }));
       await Taro.navigateTo({
         url: pageCurrentList[5]

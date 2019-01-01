@@ -26,10 +26,7 @@ const defaultState = {
   //用于对于发起模板消息的formId
   formId: null,
   //用于卖方的联系方式
-  contactInfo: null,
-  //用于登录,将微信与后台服务器绑定,建立会话
-  //@尹文楷
-  cookie: null
+  contactInfo: null
 };
 
 export default function publishStore(state = defaultState, {type, payload}) {
