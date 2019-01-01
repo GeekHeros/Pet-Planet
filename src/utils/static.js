@@ -14,7 +14,7 @@ const staticData  = {
  * 可配置的协议域名和端口号
  * @type {string}
  */
-const petPlanetPrefix = "http://47.104.74.127:8291";
+const petPlanetPrefix = "https://fic.1jtec.com/pet";
 /**
  * TabBar标签页路由标题、图标以及角标配置
  * @尹文楷
