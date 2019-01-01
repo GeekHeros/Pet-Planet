@@ -39,7 +39,9 @@ const pageCurrentList = [
   "/pages/index/index",
   "/pages/user/index",
   "/pages/detail/index",
-  "/pages/publish/index"
+  "/pages/publish/index",
+  "/pages/collection/index",
+  "/pages/publishMine/index"
 ];
 
 const staticConfig = {

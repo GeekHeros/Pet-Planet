@@ -107,8 +107,13 @@ class Index extends Component {
   };
 
   async componentDidMount() {
-    const {homeInfoHandler, changeLoadStatusHandler, getLoginSessionHandler} = this.props;
-    await getLoginSessionHandler.apply(this, [homeInfoHandler]);
+    const {homeStore, homeInfoHandler, changeLoadStatusHandler, getLoginSessionHandler} = this.props;
+    const {cookie} = homeStore;
+    if (!cookie) {
+      await getLoginSessionHandler.apply(this, [homeInfoHandler]);
+    } else {
+      await homeInfoHandler.apply(this, [1]);
+    }
     await changeLoadStatusHandler("more");
   }
 
@@ -149,9 +154,6 @@ class Index extends Component {
       await changeLoadStatusHandler(staticData["loadStatusConfig"]["loading"]);
       await homeInfoHandler.apply(this, [++pageNum]);
     }
-    if (currentPetList.length < staticData["pageSize"] && loadStatus === staticData["loadStatusConfig"]["more"]) {
-      await changeLoadStatusHandler(staticData["loadStatusConfig"]["noMore"]);
-    }
   }
 
   /**
@@ -177,10 +179,11 @@ class Index extends Component {
     const {current, petList, loadStatus} = homeStore;
     return (
       <View className='pet'>
+        {/*首页宠物交易列表区域*/}
         <CardView
           list={petList}
           onScrollToLower={this.onScrollToLower}
-          onClick={this.getPetDetailHandler.bind(this)}
+          onClick={this.getPetDetailHandler}
           loadStatus={loadStatus}
         />
         {/*按钮发布区域: 使用formId进行发起一次有formId的模板消息请求*/}

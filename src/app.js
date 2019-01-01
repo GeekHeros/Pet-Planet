@@ -6,6 +6,8 @@ import Index from './pages/index';
 import User from './pages/user';
 import Publish from './pages/publish';
 import Detail from './pages/detail';
+import Collection from './pages/collection';
+import PublishMine from './pages/publishMine';
 
 import store from './store';
 
@@ -21,7 +23,9 @@ class App extends Component {
       'pages/index/index',
       'pages/user/index',
       'pages/publish/index',
-      'pages/detail/index'
+      'pages/detail/index',
+      'pages/collection/index',
+      'pages/publishMine/index'
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -55,6 +59,8 @@ class App extends Component {
         <User />
         <Publish />
         <Detail />
+        <Collection />
+        <PublishMine />
       </Provider>
     )
   }

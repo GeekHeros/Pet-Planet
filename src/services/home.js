@@ -1,11 +1,10 @@
 import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
-import {petPlanetPrefix, staticData} from "../utils/static";
+import {petPlanetPrefix, staticData, pageCurrentList} from "../utils/static";
 import {getPetList, changeLoadStatus, setAttrValue} from "../actions/home";
 import {setPublishAttrValue} from "../actions/publish";
 import prompt from "../constants/prompt";
 import {setDetailAttrValue} from "../actions/detail";
-import {pageCurrentList} from "../utils/static";
 
 /**
  * 调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
@@ -86,7 +85,8 @@ function homeInfoRequest() {
           currentPetList: data.items
         }));
         await dispatch(changeLoadStatus({
-          loadStatus: data.items.length > 0 ? staticData["loadStatusConfig"]["more"] : staticData["loadStatusConfig"]["noMore"]
+          loadStatus: (data.items.length > 0 && data.items.length === staticData["pageSize"]) ?
+            staticData["loadStatusConfig"]["more"] : staticData["loadStatusConfig"]["noMore"]
         }));
       },
       complete: async (res) => {

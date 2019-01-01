@@ -1,4 +1,4 @@
-import Taro from "@tarojs/taro";
+import Taro, {Component} from "@tarojs/taro";
 import {View, ScrollView} from "@tarojs/components";
 import {
   AtTextarea,
@@ -83,7 +83,7 @@ import "./index.less";
   };
 })
 
-class Publish extends Taro.Component {
+class Publish extends Component {
   static options = {
     addGlobalClass: true
   };

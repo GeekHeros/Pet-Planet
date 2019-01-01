@@ -3,23 +3,77 @@ import {View} from "@tarojs/components";
 import {AtTabBar, AtAvatar, AtIcon} from "taro-ui";
 import {connect} from "@tarojs/redux";
 import {changeCurrent} from "../../actions/home";
+import {setCollectionAttrValue} from "../../actions/collection";
+import {setPublishMineAttrValue} from "../../actions/publishMine";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
+import {collectionAPI, publishMineAPI} from "../../services";
 
 import "./iconfont/iconfont.less";
 import "./user.less";
 
 @connect((state) => {
   return {
-    ...state,
-    homeStore: state.homeStore
+    homeStore: state.homeStore,
+    collectionStore: state.collectionStore,
+    publishMineStore: state.publishMineStore
   }
 }, (dispatch) => {
   return {
+    /**
+     * 通过onClick事件来更新current值变化
+     * @param value
+     */
     changeCurrentHandler(value) {
       dispatch(changeCurrent({current: value}));
       Taro.redirectTo({
         url: pageCurrentList[`${value}`]
       });
+    },
+
+    /**
+     * 拉取收藏列表
+     * @param pageNum
+     * @尹文楷
+     */
+    async usersCollectionHandler(pageNum) {
+      const {homeStore} = this.props;
+      const {cookie} = homeStore;
+      if (pageNum === 1) {
+        await dispatch(setCollectionAttrValue({
+          petCollectionList: []
+        }));
+      }
+      await dispatch(setCollectionAttrValue({
+        pageNum,
+        cookie
+      }));
+      await Taro.navigateTo({
+        url: pageCurrentList[4]
+      });
+      await dispatch(collectionAPI.usersCollectionRequest.apply(this));
+    },
+
+    /**
+     * 拉取发布列表
+     * @param pageNum
+     * @尹文楷
+     */
+    async usersPublishMineHandler(pageNum) {
+      const {homeStore} = this.props;
+      const {cookie} = homeStore;
+      if (pageNum === 1) {
+        await dispatch(setPublishMineAttrValue({
+          petPublishMineList: []
+        }));
+      }
+      await dispatch(setPublishMineAttrValue({
+        pageNum,
+        cookie
+      }));
+      await Taro.navigateTo({
+        url: pageCurrentList[5]
+      });
+      await dispatch(publishMineAPI.usersPublishMineRequest.apply(this));
     }
   }
 })
@@ -60,6 +114,24 @@ class User extends Component {
 
   }
 
+  /**
+   * 拉取收藏列表
+   * @尹文楷
+   */
+  usersCollection() {
+    const {usersCollectionHandler} = this.props;
+    usersCollectionHandler.apply(this, [1]);
+  }
+
+  /**
+   * 拉取发布列表
+   * @尹文楷
+   */
+  usersPublishMine() {
+    const {usersPublishMineHandler} = this.props;
+    usersPublishMineHandler.apply(this, [1]);
+  }
+
   render() {
     const {homeStore, changeCurrentHandler} = this.props;
     const {current} = homeStore;
@@ -86,13 +158,16 @@ class User extends Component {
           </View>
         </View>
         <View className='at-row at-row--wrap pet-me-information pet-me-information-nowrap'>
-          <View className='at-row pet-me-information-publish'>
+          <View
+            className='at-row pet-me-information-collection'
+            onClick={this.usersCollection}
+          >
             <View className='at-col-9'>
               我的收藏
             </View>
-            <View className='at-col-3 pet-me-information-publish-detail'>
+            <View className='at-col-3 pet-me-information-collection-detail'>
               <AtIcon
-                className='pet-me-information-publish-detail-button'
+                className='pet-me-information-collection-detail-button'
                 prefixClass='iconfont'
                 value='petPlanet-right'
                 color='#c8c8c8'
@@ -100,13 +175,16 @@ class User extends Component {
               />
             </View>
           </View>
-          <View className='at-row pet-me-information-like'>
+          <View
+            className='at-row pet-me-information-publish'
+            onClick={this.usersPublishMine}
+          >
             <View className='at-col-9'>
-              我的关注
+              我的发布
             </View>
-            <View className='at-col-3 pet-me-information-like-detail'>
+            <View className='at-col-3 pet-me-information-publish-detail'>
               <AtIcon
-                className='pet-me-information-like-detail-button'
+                className='pet-me-information-publish-detail-button'
                 prefixClass='iconfont'
                 value='petPlanet-right'
                 color='#c8c8c8'

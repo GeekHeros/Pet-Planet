@@ -175,7 +175,7 @@ class Detail extends Component {
               type='secondary'
               className='pet-detail-position-share-button'
             >
-              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4'/>
+              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4' />
             </AtButton>
           </View>
         </View>

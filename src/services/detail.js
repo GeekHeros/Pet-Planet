@@ -20,7 +20,7 @@ function setCollectionRequest() {
         cookie
       },
       data: {},
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         await dispatch(setDetailAttrValue({
           collection: prompt["collection"]["collected"]["text"],
           collectionType: prompt["collection"]["collected"]["type"],
@@ -51,7 +51,7 @@ function setNoCollectionRequest() {
         cookie
       },
       data: {},
-      success: async (data, statusCode, header) => {
+      success: async (data, header) => {
         await dispatch(setDetailAttrValue({
           collection: prompt["collection"]["noCollected"]["text"],
           collectionType: prompt["collection"]["noCollected"]["type"],
