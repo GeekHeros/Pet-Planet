@@ -5,15 +5,17 @@ import {
   AtButton
 } from "taro-ui";
 import {connect} from "@tarojs/redux";
-import {detailAPI} from "../../services/index";
-import {pageCurrentList} from "../../utils/static";
+import {detailAPI, collectionAPI} from "../../services/index";
+import {setCollectionAttrValue} from "../../actions/collection";
+import {pageCurrentList, staticData} from "../../utils/static";
 import "./iconfont/iconfont.less";
 import "./index.less";
 
 @connect((state) => {
   return {
     homeStore: state.homeStore,
-    detailStore: state.detailStore
+    detailStore: state.detailStore,
+    collectionStore: state.collectionStore
   };
 }, (dispatch) => {
   return {
@@ -30,6 +32,19 @@ import "./index.less";
      */
     async setNoCollectionHandler() {
       await dispatch(detailAPI.setNoCollectionRequest.apply(this));
+    },
+    /**
+     * 拉取收藏列表
+     * @尹文楷
+     */
+    async usersCollectionHandler() {
+      await dispatch(setCollectionAttrValue({
+        pageNum: 1,
+        petCollectionList: [],
+        currentPetCollectionList: [],
+        loadStatus: staticData["loadStatusConfig"]["more"]
+      }));
+      await dispatch(collectionAPI.usersCollectionRequest.apply(this));
     }
   };
 })
@@ -92,9 +107,14 @@ class Detail extends Component {
    */
   async setCollectionConfig() {
     const {setCollection, setNoCollection} = this;
-    const {detailStore} = this.props;
+    const {detailStore, usersCollectionHandler} = this.props;
     const {collected} = detailStore;
     await collected ? setNoCollection.apply(this) : setCollection.apply(this);
+    let currentPages = Taro.getCurrentPages(),
+      length = currentPages.length;
+    if (pageCurrentList[4].indexOf(currentPages[length - 2]["route"]) !== -1) {
+      await usersCollectionHandler.apply(this);
+    }
   }
 
   render() {
@@ -175,7 +195,7 @@ class Detail extends Component {
               type='secondary'
               className='pet-detail-position-share-button'
             >
-              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4' />
+              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4'/>
             </AtButton>
           </View>
         </View>
