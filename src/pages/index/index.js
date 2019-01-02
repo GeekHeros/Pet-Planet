@@ -18,8 +18,8 @@ import "./card-view.less";
 
 @connect((state) => {
   return {
-    ...state,
-    homeStore: state.homeStore
+    homeStore: state.homeStore,
+    detailStore: state.detailStore
   }
 }, (dispatch) => {
   return {

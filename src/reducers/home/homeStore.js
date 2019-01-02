@@ -5,6 +5,8 @@ import _ from "lodash";
 
 
 const defaultState = {
+  //宠物交易列表每项的id
+  id: 0,
   current: 0,
   pageNum: 1,
   pageSize: staticData["pageSize"],

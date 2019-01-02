@@ -57,6 +57,11 @@ class Detail extends Component {
   };
 
   componentDidMount() {
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+
   }
 
   /**

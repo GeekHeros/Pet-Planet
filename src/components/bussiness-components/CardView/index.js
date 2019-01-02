@@ -7,6 +7,7 @@ import {
   View
 } from "@tarojs/components";
 import {
+  AtAvatar,
   AtCard,
   AtIcon,
   AtLoadMore
@@ -74,8 +75,14 @@ class CardView extends Component {
                         {petItem['wantCount']}人想要
                       </text>
                     </View>
-                    <View className='pet-business-list-username'>
-                      {petItem['userId']}
+                    <View className='pet-business-list-user'>
+                      <AtAvatar
+                        size='small'
+                        circle
+                        image={petItem['avatarUrl']}
+                        className='pet-business-list-avatar'
+                      />
+                      {petItem['nickName']}
                     </View>
                     <View className='pet-business-list-address'>
                       <AtIcon
