@@ -180,7 +180,7 @@ class Detail extends Component {
           }
         </View>
         <View className='at-row at-row--no-wrap pet-detail-position'>
-          <View className='at-col at-col-5 pet-detail-position-area'>
+          <View className='at-col at-col-8 pet-detail-position-area'>
             <AtIcon
               prefixClass='iconfont'
               value='petPlanet-gps'
@@ -190,7 +190,7 @@ class Detail extends Component {
             />
             {area}
           </View>
-          <View className='at-col at-col-5'>
+          <View className='at-col at-col-2'>
 
           </View>
           <View className='at-col at-col-2 pet-detail-position-share'>

@@ -89,7 +89,7 @@ class CardView extends Component {
                         prefixClass='iconfont'
                         value='petPlanet-gps'
                         className='pet-business-list-address-icon'
-                        size={12} color='#ec544c'
+                        size={13} color='#ec544c'
                       />
                       {petItem['area']}
                     </View>
