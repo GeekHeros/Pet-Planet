@@ -1,7 +1,7 @@
 import {homeConstants} from "../../constants";
 import {staticData} from "../../utils/static";
 import Tools from "../../utils/petPlanetTools";
-import _ from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 
 const defaultState = {
@@ -58,7 +58,7 @@ export default function homeStore(state = defaultState, {type, payload}) {
           }
         }
         return stateChange;
-      })(_.cloneDeep(state), payload);
+      })(cloneDeep(state), payload);
     default:
       break;
   }

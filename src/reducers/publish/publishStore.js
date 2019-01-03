@@ -1,6 +1,6 @@
 import {publishConstants} from "../../constants";
 import Tools from "../../utils/petPlanetTools";
-import _ from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 const defaultState = {
   //用来校验用户是否拒绝了获取定位授权请求
@@ -50,7 +50,7 @@ export default function publishStore(state = defaultState, {type, payload}) {
           }
         }
         return stateChange;
-      })(_.cloneDeep(state), payload);
+      })(cloneDeep(state), payload);
     default:
       break;
   }

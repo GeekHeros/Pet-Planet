@@ -1,6 +1,6 @@
 import {detailConstants} from "../../constants";
 import Tools from "../../utils/petPlanetTools";
-import _ from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 const defaultState = {
   //用于对于发布的宠物交易的id
@@ -50,7 +50,7 @@ export default function detailStore(state = defaultState, {type, payload}) {
           }
         }
         return stateChange;
-      })(_.cloneDeep(state), payload);
+      })(cloneDeep(state), payload);
   }
   return state;
 }

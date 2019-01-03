@@ -1,7 +1,7 @@
 import {publishMineConstants} from "../../constants";
 import {staticData} from "../../utils/static";
 import Tools from "../../utils/petPlanetTools";
-import _ from "lodash";
+import cloneDeep from "lodash.clonedeep";
 
 const defaultState = {
   pageNum: 1,
@@ -38,7 +38,7 @@ export default function publishMineStore(state = defaultState, {type, payload}) 
           }
         }
         return stateChange;
-      })(_.cloneDeep(state), payload);
+      })(cloneDeep(state), payload);
   }
   return state;
 }
