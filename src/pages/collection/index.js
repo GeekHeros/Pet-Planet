@@ -3,7 +3,7 @@ import {connect} from "@tarojs/redux";
 import {View} from "@tarojs/components";
 import {setCollectionAttrValue} from "../../actions/collection";
 import CardView from "../../components/bussiness-components/CardView";
-import {staticData} from "../../utils/static";
+import {staticData, pageCurrentList} from "../../utils/static";
 import {homeAPI, collectionAPI} from "../../services";
 import "./index.less";
 import "./card-view.less";
@@ -76,9 +76,12 @@ class Collection extends Component {
    * @param id
    * @尹文楷
    **/
-  getPetCollectionDetailHandler(id) {
+  async getPetCollectionDetailHandler(id) {
     const {getPetCollectionDetailInfoHandler} = this.props;
-    getPetCollectionDetailInfoHandler.apply(this, [id]);
+    await Taro.navigateTo({
+      url: pageCurrentList[2]
+    });
+    await getPetCollectionDetailInfoHandler.apply(this, [id]);
   }
 
   render() {

@@ -117,14 +117,13 @@ function getFormIdRequest(formId) {
           files: [],
           uploadFilterFiles: [],
           images: [],
+          isLocationAuthorize: false,
+          area: "点击定位",
           title: null,
           cost: null,
           formId,
           contactInfo: null
         }));
-        await Taro.navigateTo({
-          url: pageCurrentList[3]
-        });
       },
       complete: async (data) => {
 
@@ -162,9 +161,6 @@ function getPetDetailRequest(id) {
           collectionType: collected ? prompt["collection"]["collected"]["type"] : prompt["collection"]["noCollected"]["type"],
           wantCount
         }));
-        await Taro.navigateTo({
-          url: pageCurrentList[2]
-        });
       },
       complete: async (res) => {
 

@@ -93,6 +93,14 @@ class Publish extends Component {
   };
 
   /**
+   * 在显示此发布路由页面时进行的操作
+   * @returns {Promise<void>}
+   */
+  async componentDidShow() {
+
+  }
+
+  /**
    * 改变输入框的内容
    * @尹文楷
    * @returns {Promise<void>}
@@ -229,7 +237,7 @@ class Publish extends Component {
         scrollY={true}
         scrollTop={0}
       >
-        <AtMessage />
+        <AtMessage/>
         <View className='pet-business-publish'>
           <View className='pet-business-publish-content'>
             <View className='pet-business-publish-content-top'>

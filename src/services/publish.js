@@ -171,6 +171,8 @@ function publishItemRequest() {
       data: params,
       success: async (data, header) => {
         await dispatch(setPublishAttrValue({
+          isLocationAuthorize: false,
+          area: "点击定位",
           content: null,
           files: [],
           uploadFilterFiles: [],

@@ -162,6 +162,9 @@ class Index extends Component {
    */
   async onSubmitHandler(event) {
     const {getFormIdHandler} = this.props;
+    await Taro.navigateTo({
+      url: pageCurrentList[3]
+    });
     await getFormIdHandler.apply(this, [event.target.formId]);
   }
 
@@ -171,6 +174,9 @@ class Index extends Component {
    **/
   async getPetDetailHandler(id) {
     const {getPetDetailInfoHandler} = this.props;
+    await Taro.navigateTo({
+      url: pageCurrentList[2]
+    });
     await getPetDetailInfoHandler.apply(this, [id]);
   }
 

@@ -4,6 +4,10 @@
  * @type {{}}
  */
 const prompt = {
+  //用于小程序获取位置权限时展示的接口用途说明
+  scopeUserLocation: {
+    desc: "你的位置信息将用于小程序位置接口的效果展示"
+  },
   verify: {
     publish_page: {
       isEmpty: [
