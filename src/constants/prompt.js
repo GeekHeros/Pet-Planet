@@ -23,7 +23,7 @@ const prompt = {
   },
   navigationBarTitleText: {
     home_page: {
-      initial: "首页",
+      initial: "主子",
       publish: ""
     },
     user_page: {
@@ -56,7 +56,7 @@ const prompt = {
   },
   collection: {
     collected: {
-      text:"取消收藏",
+      text:"已收藏",
       type: "primary"
     },
     noCollected: {

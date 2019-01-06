@@ -21,7 +21,7 @@ const petPlanetPrefix = "https://fic.1jtec.com/pet";
  * @type {*[]}
  */
 const tabBarTabList = [{
-  title: "首页",
+  title: "主子",
   iconPrefixClass: "iconfont",
   iconType: "petPlanet-planet"
 }, {
