@@ -5,6 +5,7 @@ import {setCollectionAttrValue} from "../../actions/collection";
 import CardView from "../../components/bussiness-components/CardView";
 import {staticData, pageCurrentList} from "../../utils/static";
 import {homeAPI, collectionAPI} from "../../services";
+import "../iconfont/iconfont.less";
 import "./index.less";
 import "./card-view.less";
 

@@ -16,7 +16,7 @@ import {publishAPI} from "../../services";
 import Tools from "../../utils/petPlanetTools";
 import prompt from "../../constants/prompt";
 
-import "./iconfont/iconfont.less";
+import "../iconfont/iconfont.less";
 import "./index.less";
 
 

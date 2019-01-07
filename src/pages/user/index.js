@@ -8,7 +8,7 @@ import {setPublishMineAttrValue} from "../../actions/publishMine";
 import {tabBarTabList, pageCurrentList} from "../../utils/static";
 import {collectionAPI, publishMineAPI} from "../../services";
 
-import "./iconfont/iconfont.less";
+import "../iconfont/iconfont.less";
 import "./user.less";
 
 @connect((state) => {

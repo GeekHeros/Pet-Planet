@@ -11,7 +11,7 @@ import CardView from "../../components/bussiness-components/CardView";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
 import {homeAPI} from "../../services";
 import {tabBarTabList, pageCurrentList, staticData} from "../../utils/static";
-import "./iconfont/iconfont.less";
+import "../iconfont/iconfont.less";
 import "./index.less";
 import "./card-view.less";
 

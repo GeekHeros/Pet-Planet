@@ -8,7 +8,7 @@ import {connect} from "@tarojs/redux";
 import {detailAPI, collectionAPI} from "../../services/index";
 import {setCollectionAttrValue} from "../../actions/collection";
 import {pageCurrentList, staticData} from "../../utils/static";
-import "./iconfont/iconfont.less";
+import "../iconfont/iconfont.less";
 import "./index.less";
 
 @connect((state) => {
@@ -135,9 +135,9 @@ class Detail extends Component {
           <View className='at-col at-col-4 at-col__offset-1 at-col--wrap pet-detail-header-container'>
             <AtIcon
               prefixClass='iconfont'
-              value='petPlanet-planet' size={14}
+              value='petPlanet-jinghao' size={14}
               className='pet-detail-header-title-icon'
-              color='#5c89e4'
+              color='#fb2a5d'
             />
             <Text className='pet-detail-header-title'>
               {title}
