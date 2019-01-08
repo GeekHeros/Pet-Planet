@@ -13,7 +13,6 @@ page {
         text.pet-detail-header-title {
           color: #fb2a5d;
           font-size: 28px;
-          margin-left: 8px;
           text-overflow: ellipsis;
           white-space: nowrap;
           overflow: hidden;
@@ -25,12 +24,21 @@ page {
         text-align: right;
 
         &-button {
+
+          &.collected {
+            border: none !important;
+            background-color: transparent !important;
+            color: #ccc !important;
+          }
+
           font-size: 24px;
           min-width: 64px;
           height: 54px;
           line-height: 52px;
           margin-top: 10px;
           border-radius: 80px;
+          color: #fb2a5d;
+          border: 1px solid #eee;
           padding: 0 25px;
         }
       }

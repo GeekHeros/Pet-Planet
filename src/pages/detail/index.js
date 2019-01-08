@@ -124,7 +124,7 @@ class Detail extends Component {
 
   render() {
     const {detailStore} = this.props;
-    const {title, cost, content, images, area, collection, collectionType} = detailStore;
+    const {title, cost, content, collected, images, area, collection, collectionType} = detailStore;
     return (
       <ScrollView
         className='pet-detail'
@@ -135,7 +135,8 @@ class Detail extends Component {
           <View className='at-col at-col-4 at-col__offset-1 at-col--wrap pet-detail-header-container'>
             <AtIcon
               prefixClass='iconfont'
-              value='petPlanet-jinghao' size={14}
+              value='petPlanet-jinghao' 
+              size={14}
               className='pet-detail-header-title-icon'
               color='#fb2a5d'
             />
@@ -150,7 +151,7 @@ class Detail extends Component {
             <AtButton
               type={collectionType}
               size='small'
-              className='pet-detail-header-collection-button'
+              className={`${'pet-detail-header-collection-button'} ${collected ? 'collected' : ''}`}
               onClick={this.setCollectionConfig}
             >
               {collection}
