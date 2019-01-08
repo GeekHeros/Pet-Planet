@@ -192,6 +192,8 @@ class User extends Component {
           current={current}
           tabList={tabBarTabList}
           onClick={changeCurrentHandler}
+          color='#000'
+          selectedColor='#fb2a5d'
         />
       </View>
     )

@@ -219,6 +219,8 @@ class Index extends Component {
           current={current}
           tabList={tabBarTabList}
           onClick={changeCurrentHandler}
+          color='#000d'
+          selectedColor='#000'
         />
       </View>
     )
