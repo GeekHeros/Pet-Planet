@@ -10,6 +10,7 @@ import Collection from './pages/collection';
 import PublishMine from './pages/publishMine';
 
 import store from './store';
+import mtjwxsdk from "./utils/mtj-wx-sdk";
 
 import 'taro-ui/dist/weapp/css/index.css';
 
