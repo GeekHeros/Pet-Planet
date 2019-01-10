@@ -23,11 +23,13 @@ const petPlanetPrefix = "https://fic.1jtec.com/pet";
 const tabBarTabList = [{
   title: "主子",
   iconPrefixClass: "iconfont",
-  iconType: "petPlanet-planet"
+  iconType: "petPlanet-planet",
+  selectedIconType: "petPlanet-planet-selected"
 }, {
   title: "我",
   iconPrefixClass: "iconfont",
-  iconType: "petPlanet-me"
+  iconType: "petPlanet-me",
+  selectedIconType: "petPlanet-me-selected"
 }];
 
 /**
