@@ -1,5 +1,4 @@
 import Taro from "@tarojs/taro";
-import store from "../../store";
 import multipleToNull from "./multipleToNull";
 import compareAdd from "./compareAdd";
 import requests from "./requests";
@@ -7,10 +6,6 @@ import uploadFile from "./uploadFile";
 import {getSetting, chooseLocation, authorize, openSetting} from "./getSetting";
 import loginCode from "./loginCode";
 import {petPlanetPrefix} from "../static";
-import {setAttrValue} from "../../actions/home";
-import {setPublishAttrValue} from "../../actions/publish";
-import {setCollectionAttrValue} from "../../actions/collection";
-import {setPublishMineAttrValue} from "../../actions/publishMine";
 
 const PetPlanetTools = (function () {
   //用于表单保存校验的规则
