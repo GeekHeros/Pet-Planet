@@ -7,15 +7,7 @@ import Taro from "@tarojs/taro";
 function exception({errMsg, data: {statusCode}, request, params}) {
   switch (statusCode) {
     case 401:
-      Taro.showModal({
-        title: `${statusCode}`,
-        content: errMsg,
-        showCancel: false,
-        confirmColor: "#5c89e4",
-        success: async () => {
-          await this.loginSession(request, params);
-        }
-      });
+      this.loginSession(request, params);
       return false;
     case 500:
       Taro.showModal({
