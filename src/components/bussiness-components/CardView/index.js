@@ -30,7 +30,7 @@ class CardView extends Component {
     //卡片组件包含的样式名称
     wrapperClassName: PropTypes.string,
     //上拉加载更多
-    loadStatus: PropTypes.bool,
+    loadStatus: PropTypes.string,
     //当滚动条滚到底部的时候进行上拉加载动作
     onScrollToLower: PropTypes.func.isRequired
   };

@@ -1,20 +1,23 @@
 import '@tarojs/async-await';
 import Taro, {Component} from '@tarojs/taro';
 import {Provider} from '@tarojs/redux';
-
 import Index from './pages/index';
 import User from './pages/user';
 import Publish from './pages/publish';
 import Detail from './pages/detail';
 import Collection from './pages/collection';
 import PublishMine from './pages/publishMine';
-
 import store from './store';
-
 import 'taro-ui/dist/weapp/css/index.css';
-
 import './stylesheets/index.less';
+import gio from './utils/gio-minp';
 
+gio('init', '8b5b9f369c5caf4b', 'wxc8bccc0233cf1237', {
+  version: '1.0',
+  forceLogin: true,
+  taro: Taro,
+  debug: true
+});
 
 class App extends Component {
 
@@ -41,6 +44,7 @@ class App extends Component {
   };
 
   componentDidMount() {
+    gio('identify', "res.data.openid", 'res.data.unionid');
   }
 
   componentDidShow() {
