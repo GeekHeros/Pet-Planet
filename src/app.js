@@ -1,4 +1,3 @@
-import './utils/mtj-wx-sdk';
 import '@tarojs/async-await';
 import Taro, {Component} from '@tarojs/taro';
 import {Provider} from '@tarojs/redux';
