@@ -18,7 +18,9 @@ const defaultState = {
   currentPetList: [],
   //组件状态，more 状态显示查看更多按钮，loading 状态显示加载状态，noMore 显示无更多数据
   //@尹文楷
-  loadStatus: staticData["loadStatusConfig"]["more"]
+  loadStatus: staticData["loadStatusConfig"]["more"],
+  //是否是获取用户登录态信息标识符
+  loginSessionStatus: false
 };
 
 /**

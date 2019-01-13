@@ -1,21 +1,22 @@
 import Taro from "@tarojs/taro";
 import Tools from "../utils/petPlanetTools";
-import {petPlanetPrefix, staticData, pageCurrentList} from "../utils/static";
-import {getPetList, changeLoadStatus} from "../actions/home";
+import gio from '../utils/gio-minp';
+import {petPlanetPrefix, staticData} from "../utils/static";
+import {getPetList, changeLoadStatus, setAttrValue} from '../actions/home';
 import {setPublishAttrValue} from "../actions/publish";
-import prompt from "../constants/prompt";
 import {setDetailAttrValue} from "../actions/detail";
+import prompt from "../constants/prompt";
 
 /**
  * 调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
  * @尹文楷
  */
-function getLoginSession(homeInfoHandler) {
+function getLoginSession() {
   return async (dispatch) => {
     return await Tools.login({
       timeout: 5000,
       success: async (code) => {
-        await dispatch(getLoginCookie.apply(this, [code, homeInfoHandler]));
+        await dispatch(getLoginCookie.apply(this, [code]));
       },
       fail: async (res) => {
 
@@ -28,10 +29,33 @@ function getLoginSession(homeInfoHandler) {
 }
 
 /**
+ * 获取用户OpenId
+ * @尹文楷
+ */
+function getUserOpenId(gio_result) {
+  return async (dispatch) => {
+    return await Tools.request({
+      url: `${petPlanetPrefix}/users/openid`,
+      method: "get",
+      header: {
+        "content-type": "application/json",
+        "cookie": Taro.getStorageSync("petPlanet")
+      },
+      success: async (data, header) => {
+        await gio_result(data, header);
+      },
+      complete(res) {
+
+      }
+    });
+  };
+}
+
+/**
  * 登录,将微信与后台服务器绑定,建立会话
  * @尹文楷
  */
-function getLoginCookie(code, homeInfoHandler) {
+function getLoginCookie(code) {
   return async (dispatch) => {
     return await Tools.request({
       url: `${petPlanetPrefix}/tinySession/login`,
@@ -44,7 +68,12 @@ function getLoginCookie(code, homeInfoHandler) {
       },
       success: async (data, header) => {
         await Taro.setStorageSync("petPlanet", header["Set-Cookie"]);
-        await homeInfoHandler.apply(this, [1]);
+        await dispatch(getUserOpenId(function (data, header) {
+          gio('identify', data, 'res.data.unionId');
+        }));
+        await dispatch(setAttrValue({
+          loginSessionStatus: false
+        }));
       },
       fail: async (res) => {
 
@@ -173,7 +202,8 @@ const homeAPI = {
   homeInfoRequest,
   getFormIdRequest,
   getLoginSession,
-  getPetDetailRequest
+  getPetDetailRequest,
+  getUserOpenId
 };
 
 export default homeAPI;
