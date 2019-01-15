@@ -2,6 +2,7 @@ import Taro, {Component} from "@tarojs/taro";
 import {View} from "@tarojs/components";
 import {AtTabBar, AtAvatar, AtIcon} from "taro-ui";
 import {connect} from "@tarojs/redux";
+import mta from "mta-wechat-analysis";
 import {changeCurrent} from "../../actions/home";
 import {setCollectionAttrValue} from "../../actions/collection";
 import {setPublishMineAttrValue} from "../../actions/publishMine";
@@ -83,6 +84,10 @@ class User extends Component {
   config = {
     navigationBarTitleText: "我"
   };
+
+  async componentWillMount() {
+    await mta.Page.init();
+  }
 
   componentDidMount() {
 

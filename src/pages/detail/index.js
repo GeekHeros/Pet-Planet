@@ -5,6 +5,7 @@ import {
   AtButton
 } from "taro-ui";
 import {connect} from "@tarojs/redux";
+import mta from "mta-wechat-analysis";
 import {detailAPI, collectionAPI} from "../../services/index";
 import {setCollectionAttrValue} from "../../actions/collection";
 import {pageCurrentList, staticData} from "../../utils/static";
@@ -55,6 +56,10 @@ class Detail extends Component {
   config = {
     navigationBarTitleText: "内容详情"
   };
+
+  async componentWillMount() {
+    await mta.Page.init();
+  }
 
   componentDidMount() {
 

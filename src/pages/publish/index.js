@@ -11,6 +11,7 @@ import {
   AtMessage
 } from "taro-ui";
 import {connect} from "@tarojs/redux";
+import mta from "mta-wechat-analysis";
 import {setPublishAttrValue} from "../../actions/publish";
 import {publishAPI} from "../../services";
 import Tools from "../../utils/petPlanetTools";
@@ -91,6 +92,10 @@ class Publish extends Component {
   config = {
     navigationBarTitleText: "发布"
   };
+
+  async componentWillMount() {
+    await mta.Page.init();
+  }
 
   /**
    * 在显示此发布路由页面时进行的操作

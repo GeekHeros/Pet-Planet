@@ -1,6 +1,7 @@
 import Taro, {Component} from "@tarojs/taro";
 import {connect} from "@tarojs/redux";
 import {View} from "@tarojs/components";
+import mta from "mta-wechat-analysis";
 import {setCollectionAttrValue} from "../../actions/collection";
 import CardView from "../../components/bussiness-components/CardView";
 import {staticData, pageCurrentList} from "../../utils/static";
@@ -56,6 +57,10 @@ class Collection extends Component {
   config = {
     navigationBarTitleText: "收藏列表"
   };
+
+  async componentWillMount() {
+    await mta.Page.init();
+  }
 
   /**
    * 当滚动条滚到底部的时候进行上拉加载动作

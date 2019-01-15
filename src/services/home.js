@@ -1,6 +1,6 @@
 import Taro from "@tarojs/taro";
+import mta from "mta-wechat-analysis";
 import Tools from "../utils/petPlanetTools";
-import gio from '../utils/gio-minp';
 import {petPlanetPrefix, staticData} from "../utils/static";
 import {getPetList, changeLoadStatus, setAttrValue} from '../actions/home';
 import {setPublishAttrValue} from "../actions/publish";
@@ -42,7 +42,7 @@ function getUserOpenId(gio_result) {
         "cookie": Taro.getStorageSync("petPlanet")
       },
       success: async (data, header) => {
-        await gio_result(data, header);
+        await gio_result.call(this, data, header);
       },
       complete(res) {
 
@@ -68,8 +68,8 @@ function getLoginCookie(code) {
       },
       success: async (data, header) => {
         await Taro.setStorageSync("petPlanet", header["Set-Cookie"]);
-        await dispatch(getUserOpenId(function (data, header) {
-          gio('identify', data, 'res.data.unionId');
+        await dispatch(getUserOpenId.call(this, function (data, header) {
+
         }));
         await dispatch(setAttrValue({
           loginSessionStatus: false

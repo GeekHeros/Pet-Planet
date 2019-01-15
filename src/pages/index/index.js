@@ -7,6 +7,7 @@ import {
   AtButton,
   AtIcon
 } from 'taro-ui';
+import mta from "mta-wechat-analysis";
 import CardView from "../../components/bussiness-components/CardView";
 import {changeCurrent, changePageNum, changeLoadStatus, setAttrValue} from "../../actions/home";
 import {homeAPI} from "../../services";
@@ -97,6 +98,10 @@ class Index extends Component {
   config = {
     navigationBarTitleText: "主子"
   };
+
+  async componentWillMount() {
+    await mta.Page.init();
+  }
 
   async componentDidMount() {
     const {homeInfoHandler, changeLoadStatusHandler} = this.props;

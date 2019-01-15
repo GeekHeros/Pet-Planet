@@ -1,7 +1,7 @@
 import '@tarojs/async-await';
 import Taro, {Component} from '@tarojs/taro';
 import {Provider} from '@tarojs/redux';
-import gio from './utils/gio-minp';
+import mta from "mta-wechat-analysis";
 import Index from './pages/index';
 import User from './pages/user';
 import Publish from './pages/publish';
@@ -14,13 +14,6 @@ import {homeAPI} from "./services";
 import 'taro-ui/dist/weapp/css/index.css';
 import './stylesheets/index.less';
 
-gio('init', '8b5b9f369c5caf4b', 'wxc8bccc0233cf1237', {
-  version: '1.0',
-  forceLogin: true,
-  followShare: true,
-  taro: Taro,
-  debug: true
-});
 
 class App extends Component {
 
@@ -50,16 +43,31 @@ class App extends Component {
     await store.dispatch(setAttrValue({
       loginSessionStatus: true
     }));
+    await mta.App.init({
+      "appID": "500667188",
+      "eventID": "500667199",
+      "lauchOpts": this.$router.params,
+      "statPullDownFresh": true,
+      "statShareApp": true,
+      "statReachBottom": true
+    });
     //调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
-    await store.dispatch(homeAPI.getLoginSession());
+    await store.dispatch(homeAPI.getLoginSession.apply(this));
   }
 
   async componentDidShow() {
     let {homeStore} = store.getState();
     let {loginSessionStatus} = homeStore;
     if (!loginSessionStatus) {
-      await store.dispatch(homeAPI.getUserOpenId(function (data, header) {
-        gio('identify', data, 'res.data.unionId');
+      await store.dispatch(homeAPI.getUserOpenId.call(this, function (data, header) {
+        mta.App.init({
+          "appID": "500667188",
+          "eventID": "500667199",
+          "lauchOpts": this.$router.params,
+          "statPullDownFresh": true,
+          "statShareApp": true,
+          "statReachBottom": true
+        });
       }));
     }
   }
@@ -89,4 +97,4 @@ class App extends Component {
   }
 }
 
-Taro.render(<App/>, document.querySelector("#app"));
+Taro.render(<App />, document.querySelector("#app"));
