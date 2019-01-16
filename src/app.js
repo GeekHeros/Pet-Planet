@@ -2,6 +2,7 @@ import '@tarojs/async-await';
 import Taro, {Component} from '@tarojs/taro';
 import {Provider} from '@tarojs/redux';
 import mta from "mta-wechat-analysis";
+import Tools from "./utils/petPlanetTools";
 import Index from './pages/index';
 import User from './pages/user';
 import Publish from './pages/publish';
@@ -43,14 +44,7 @@ class App extends Component {
     await store.dispatch(setAttrValue({
       loginSessionStatus: true
     }));
-    await mta.App.init({
-      "appID": "500667188",
-      "eventID": "500667199",
-      "lauchOpts": this.$router.params,
-      "statPullDownFresh": true,
-      "statShareApp": true,
-      "statReachBottom": true
-    });
+    await Tools.mtaAppInit.apply(this);
     //调用接口获取登录凭证（code）。通过凭证进而换取用户登录态信息，包括用户的唯一标识（openid）及本次登录的会话密钥（session_key）等。用户数据的加解密通讯需要依赖会话密钥完成
     await store.dispatch(homeAPI.getLoginSession.apply(this));
   }
@@ -60,14 +54,7 @@ class App extends Component {
     let {loginSessionStatus} = homeStore;
     if (!loginSessionStatus) {
       await store.dispatch(homeAPI.getUserOpenId.call(this, function (data, header) {
-        mta.App.init({
-          "appID": "500667188",
-          "eventID": "500667199",
-          "lauchOpts": this.$router.params,
-          "statPullDownFresh": true,
-          "statShareApp": true,
-          "statReachBottom": true
-        });
+        Tools.mtaAppInit.apply(this);
       }));
     }
   }

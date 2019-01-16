@@ -1,5 +1,4 @@
 import Taro from "@tarojs/taro";
-import mta from "mta-wechat-analysis";
 import Tools from "../utils/petPlanetTools";
 import {petPlanetPrefix, staticData} from "../utils/static";
 import {getPetList, changeLoadStatus, setAttrValue} from '../actions/home';

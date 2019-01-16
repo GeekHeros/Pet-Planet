@@ -1,4 +1,5 @@
 import Taro from "@tarojs/taro";
+import mta from "mta-wechat-analysis";
 import multipleToNull from "./multipleToNull";
 import compareAdd from "./compareAdd";
 import requests from "./requests";
@@ -226,6 +227,21 @@ const PetPlanetTools = (function () {
      */
     chooseLocationConfig(params) {
       return chooseLocation.apply(this.wx, [params]);
+    }
+
+    /**
+     * onLaunch统计信息初始化
+     * @尹文楷
+     */
+    mtaAppInit() {
+      mta.App.init({
+        "appID": "500667188",
+        "eventID": "500667199",
+        "lauchOpts": this.$router.params,
+        "statPullDownFresh": true,
+        "statShareApp": true,
+        "statReachBottom": true
+      });
     }
   }
 
