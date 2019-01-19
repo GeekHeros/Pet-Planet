@@ -242,7 +242,7 @@ class Publish extends Component {
         scrollY={true}
         scrollTop={0}
       >
-        <AtMessage/>
+        <AtMessage />
         <View className='pet-business-publish'>
           <View className='pet-business-publish-content'>
             <View className='pet-business-publish-content-top'>
