@@ -129,7 +129,7 @@ class Detail extends Component {
 
   render() {
     const {detailStore} = this.props;
-    const {title, cost, content, collected, images, area, collection, collectionType} = detailStore;
+    const {title, cost, content, collected, images, area, collection, collectionType, contactInfo} = detailStore;
     return (
       <ScrollView
         className='pet-detail'
@@ -172,6 +172,14 @@ class Detail extends Component {
           <View className='at-row at-row--wrap pet-detail-content-info'>
             {content}
           </View>
+          <View className='at-row at-row--wrap pet-detail-content-contactInfo'>
+            <AtIcon
+              prefixClass='iconfont'
+              value='petPlanet-contactInfo'
+              color='#5c89e4'
+              size={18}
+            />{contactInfo}
+          </View>
         </View>
         <View className='pet-detail-images'>
           {
@@ -206,7 +214,7 @@ class Detail extends Component {
               type='secondary'
               className='pet-detail-position-share-button'
             >
-              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4'/>
+              <AtIcon prefixClass='iconfont' value='petPlanet-share' size={20} color='#5c89e4' />
             </AtButton>
           </View>
         </View>

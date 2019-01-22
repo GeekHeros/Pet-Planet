@@ -35,7 +35,7 @@ page {
           min-width: 64px;
           height: 54px;
           line-height: 52px;
-          margin-top: 10px;
+          margin-top: 3px;
           border-radius: 80px;
           color: #fb2a5d;
           border: 1px solid #eee;
@@ -47,6 +47,7 @@ page {
     view.pet-detail-content {
       width: 100%;
       padding: 0 24px;
+      box-sizing: border-box;
 
       &-price {
         font-size: 42px;
@@ -62,6 +63,17 @@ page {
 
       &-info {
         font-size: 32px;
+      }
+
+      &-contactInfo {
+        position: relative;
+        height: 45px;
+        font-size: 26px;
+        font-weight: bolder;
+        margin: 8px 0;
+        color: #5c89e4;
+        line-height: 45px;
+        left: -10px;
       }
     }
 
